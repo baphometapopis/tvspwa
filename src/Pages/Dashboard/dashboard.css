@@ -24,14 +24,7 @@ body {
     margin-left: 10px;
   }
   
-  .container {
-    background-color: #601818;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    flex: 1;
-    padding: 20px;
-  }
-  
+
   .info-container {
     display: flex;
     flex-direction: column; /* Change to column for mobile view */
