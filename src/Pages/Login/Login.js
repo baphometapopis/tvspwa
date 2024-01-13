@@ -89,9 +89,9 @@ const Login = () => {
             )}
           </div>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <button className="button" type="submit">
-              Login
-            </button>
+              <button className="button" type="submit">
+                Login
+              </button>
           </div>
         </div>
       </form>

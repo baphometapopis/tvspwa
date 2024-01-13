@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import "./dashboard.css"; // Import the CSS file
 import Header from "../../Component/Header/Header";
-import Logo from "../../Assets/Logo/TVS-Motor-Company.png";
 const Dashboard = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
