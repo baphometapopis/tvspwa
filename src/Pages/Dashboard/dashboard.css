@@ -2,7 +2,6 @@
 
 .dashboardcnt {
   display: flex;
-  background-color: #E8F2F2;
   font-size: 16px;
   height: 100vh;
   width: 100vw;
@@ -10,10 +9,28 @@
   /* justify-content: center; */
   align-items:flex-start ;
   flex-direction: column;
+  /* align-content: center; */
   /* flex-direction: column; */
 }
 
-  
+.scrollable-container {
+  overflow-y: auto;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: transparent transparent; /* For Firefox */
+}
+
+/* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+.scrollable-container::-webkit-scrollbar {
+  width: 1px;
+}
+
+.scrollable-container::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.scrollable-container:hover::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+}
   .header {
     background-color: #007bff;
     color: #fff;
@@ -21,6 +38,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-width: fit-content;
     width: 100vw;
   }
   
@@ -43,16 +61,52 @@
     display: flex;
     flex-direction: column; /* Change to column for mobile view */
     margin-top: 20px;
+    padding:20px;
+    /* background-color: #601818; */
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+
   }
   
   .info-box {
-    width: 100%; /* Full width for mobile view */
+    width: 80%; /* Full width for mobile view */
     margin-bottom: 20px; /* Add some spacing between boxes */
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
+    height: 100%;
+    overflow: scroll;
+
+    /* width: 80vw;  */
+
     padding: 15px; /* Adjust padding for better mobile layout */
   }
+  .info-box {
+    width: 80%;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 100%;
+    overflow: scroll; /* Enable scrolling */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: transparent transparent; /* For Firefox */
+  }
+    /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+   
+/*   
+  .info-box {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 300px;
+    max-width: 80vw; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+   */
   
   .info-box h3 {
     margin-bottom: 10px;
