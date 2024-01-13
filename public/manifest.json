@@ -1,6 +1,11 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "name": "TVS PWA",
+  "short_name": "TVS",
+  "theme_color": "#007bff",
+  "background_color": "#fff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": ".",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,18 +13,52 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "public/Images/Icons/icon-72x72.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "72x72",
+      "purpose": "maskable"
     },
     {
-      "src": "logo512.png",
+      "src": "public/Images/Icons/icon-96x96.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "96x96",
+      "purpose": "maskable"
+    },
+    {
+      "src": "public/Images/Icons/icon-128x128.png",
+      "type": "image/png",
+      "sizes": "128x128",
+      "purpose": "maskable"
+    },
+    {
+      "src": "public/Images/Icons/icon-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144",
+      "purpose": "maskable"
+    },
+    {
+      "src": "public/Images/Icons/icon-152x152.png",
+      "type": "image/png",
+      "sizes": "152x152",
+      "purpose": "maskable"
+    },
+    {
+      "src": "public/Images/Icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "public/Images/Icons/icon-384x384.png",
+      "type": "image/png",
+      "sizes": "384x384",
+      "purpose": "maskable"
+    },
+    {
+      "src": "public/Images/Icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  ]
 }

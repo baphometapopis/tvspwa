@@ -1,0 +1,66 @@
+/* dashboard.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+  }
+  
+  .container {
+    background-color: #601818;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .info-container {
+    display: flex;
+    flex-direction: column; /* Change to column for mobile view */
+    margin-top: 20px;
+  }
+  
+  .info-box {
+    width: 100%; /* Full width for mobile view */
+    margin-bottom: 20px; /* Add some spacing between boxes */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 15px; /* Adjust padding for better mobile layout */
+  }
+  
+  .info-box h3 {
+    margin-bottom: 10px;
+  }
+  
+  .search-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+  
+  /* Media query for mobile view */
+  @media (max-width: 768px) {
+    .info-box {
+      width: 100%; /* Full width for mobile view */
+    }
+  }
+  
