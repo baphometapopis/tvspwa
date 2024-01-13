@@ -65,7 +65,6 @@ const Dashboard = () => {
             {data.map((item) => (
               <div className="card" key={item.id}>
                 <h4>{item.title}</h4>
-                {/* Add more content here based on your item properties */}
               </div>
             ))}
           </div>
@@ -74,7 +73,6 @@ const Dashboard = () => {
       {isModalOpen && (
         <div className="modal" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            {/* Add your modal content here */}
             <h2>Escalation Modal</h2>
             <p>Modal content goes here...</p>
             <button onClick={closeModal}>Close Modal</button>
