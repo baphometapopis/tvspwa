@@ -1,10 +1,12 @@
 // Dashboard.js
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./dashboard.css"; // Import the CSS file
 import Header from "../../Component/Header/Header";
 import Logo from "../../Assets/Logo/TVS-Motor-Company.png";
 const Dashboard = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const data = [
     { id: 1, title: "Item 1" },
     { id: 2, title: "Item 2" },
@@ -19,9 +21,15 @@ const Dashboard = () => {
     { id: 3, title: "Item 3" },
     { id: 3, title: "Item 3" },
     { id: 3, title: "Item 3" },
-
-    // Add more items as needed
   ];
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+  useEffect(() => {}, [isModalOpen]);
   return (
     <div className="dashboardcnt">
       <Header />
@@ -48,15 +56,12 @@ const Dashboard = () => {
               <div className="value">XYZ Engine</div>
             </div>
           </div>
-          <button className="escalatebutton" type="submit">
+          <button className="escalatebutton" onClick={openModal} type="submit">
             Escalate
           </button>
         </div>
 
-        <div
-          className="info-box scrollable-container"
-          style={{ height: "100%" }}
-        >
+        <div className=" scrollable-container" style={{ height: "100%" }}>
           <div className="card-container">
             {data.map((item) => (
               <div className="card" key={item.id}>
@@ -67,6 +72,16 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <div className="modal" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            {/* Add your modal content here */}
+            <h2>Escalation Modal</h2>
+            <p>Modal content goes here...</p>
+            <button onClick={closeModal}>Close Modal</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
