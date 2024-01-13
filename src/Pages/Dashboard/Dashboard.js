@@ -27,38 +27,44 @@ const Dashboard = () => {
       <Header />
 
       <div className="info-container">
-        <div className="info-box" style={{ display: "flex", padding: "20px" }}>
-          <div className="infolabels-container">
-            <div className="infolabel">Name:</div>
-            <div className="infolabel">Phone No:</div>
-            <div className="infolabel">Email:</div>
-            <div className="infolabel">Chassis No:</div>
-            <div className="infolabel">Vehicle No:</div>
-            <div className="infolabel">Registration Date:</div>
-            <div className="infolabel">Engine Name:</div>
+        <div className="info-box">
+          <div style={{ display: "flex", padding: "20px" }}>
+            <div className="infolabels-container">
+              <div className="infolabel">Name:</div>
+              <div className="infolabel">Phone No:</div>
+              <div className="infolabel">Email:</div>
+              <div className="infolabel">Chassis No:</div>
+              <div className="infolabel">Vehicle No:</div>
+              <div className="infolabel">Registration Date:</div>
+              <div className="infolabel">Engine Name:</div>
+            </div>
+            <div className="values-container">
+              <div className="value">John Doe</div>
+              <div className="value">+1234567890</div>
+              <div className="value">john@example.com</div>
+              <div className="value">ABC123456DEF789</div>
+              <div className="value">TN1234</div>
+              <div className="value">January 1, 2022</div>
+              <div className="value">XYZ Engine</div>
+            </div>
           </div>
-          <div className="values-container">
-            <div className="value">John Doe</div>
-            <div className="value">+1234567890</div>
-            <div className="value">john@example.com</div>
-            <div className="value">ABC123456DEF789</div>
-            <div className="value">TN1234</div>
-            <div className="value">January 1, 2022</div>
-            <div className="value">XYZ Engine</div>
-          </div>
+          <button className="escalatebutton" type="submit">
+            Escalate
+          </button>
         </div>
 
         <div
           className="info-box scrollable-container"
           style={{ height: "100%" }}
         >
-          <h3>Info Box 2</h3>
-          <p>Placeholder content for the second info box.</p>
-          <ul>
+          <div className="card-container">
             {data.map((item) => (
-              <li key={item.id}>{item.title}</li>
+              <div className="card" key={item.id}>
+                <h4>{item.title}</h4>
+                {/* Add more content here based on your item properties */}
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     </div>

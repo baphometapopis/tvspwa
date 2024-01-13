@@ -81,6 +81,40 @@
     margin-top: 5px;
 
   }
+  .escalatebutton{
+      display: flex;
+      background-color: #CB2020;
+      color: #fff;
+      padding: 10px 40px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      justify-content: center;
+      align-self: center;
+      width: 50%;
+    
+  }
+  .info-box.scrollable-container {
+    overflow-y: auto;
+  }
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%; /* Adjust the width as needed */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card h4 {
+    margin-bottom: 10px;
+  }
   
 
   .info-box {
@@ -92,7 +126,11 @@
     border-radius: 4px;
     height: 100%;
     overflow: scroll;
+
 margin: 20px;
+display: flex;
+flex-direction: column;
+
 
     padding: 15px; /* Adjust padding for better mobile layout */
   }
