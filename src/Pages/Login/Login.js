@@ -2,10 +2,9 @@
 
 import React, { useState } from "react";
 import "./login.css"; // Import the CSS file
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const Navigation = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -49,14 +48,49 @@ const Login = () => {
     }
 
     // Add your authentication logic here (e.g., API call, etc.)
+    handleLoginAPi();
     console.log("Form submitted:", formData);
-    Navigation("/dashboard");
+  };
+
+  const handleLoginAPi = async () => {
+    // const loginResponse = await login(formData.username, formData.password);
+    // console.log(loginResponse);
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Basic " + btoa("indicosmic:indicosmic"));
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("email_id", "sush.rokade@gmail.com");
+    urlencoded.append("password", "sush.rokade@gmail.com");
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
+
+    fetch("https://www.tvsservice.com/Escalation_api/login", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+
+    // Navigation("/MakerEscalatePage");
   };
 
   return (
     <div className="logincontainer">
-      <div style={{backgroundColor:'red',display:"flex",justifyContent:'center',padding:'10px'}}>
-        <h2 style={{ fontSize: "12px",color:'white' }}>TVS Escalation Login</h2>
+      <div
+        style={{
+          backgroundColor: "red",
+          display: "flex",
+          justifyContent: "center",
+          padding: "10px",
+        }}
+      >
+        <h2 style={{ fontSize: "12px", color: "white" }}>
+          TVS Escalation Login
+        </h2>
       </div>
       <form onSubmit={handleSubmit}>
         <div style={{ padding: "20px" }}>
@@ -89,9 +123,9 @@ const Login = () => {
             )}
           </div>
           <div style={{ display: "flex", justifyContent: "center" }}>
-              <button className="button" type="submit">
-                Login
-              </button>
+            <button className="button" type="submit">
+              Login
+            </button>
           </div>
         </div>
       </form>

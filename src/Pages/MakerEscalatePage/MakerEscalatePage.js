@@ -1,9 +1,9 @@
 // Dashboard.js
 
 import React, { useEffect, useState } from "react";
-import "./dashboard.css"; // Import the CSS file
+import "./MakerEscalatePage.css"; // Import the CSS file
 import Header from "../../Component/Header/Header";
-const Dashboard = () => {
+const MakerEscalatePage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const data = [
@@ -83,4 +83,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default MakerEscalatePage;

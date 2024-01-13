@@ -1,0 +1,80 @@
+/* Home.css */
+
+.Homecnt {
+    display: flex;
+    font-size: 16px;
+    height: 100vh;
+    width: 100vw;
+    line-height: 1.5;
+    align-items: center;
+    flex-direction: column;
+
+  }
+  .homecnt2{
+
+    /* background-color: red; */
+    max-height: 80vh;
+    margin:auto 20px ;
+    overflow: hidden;
+
+
+    width: 85%;
+
+  }
+
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: #007bff; */
+  }
+  
+  .homecard {
+    /* margin: 5px; */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%; /* Set a fixed width for the cards */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Add margin between cards */
+  }
+  
+
+  .homesearch-container {
+    display: flex;
+    align-items: center;
+    padding: 10px; /* Add padding to the search container */
+    margin-bottom: 20px; /* Add margin to separate from other content */
+  }
+  
+  .search-dropdown {
+    margin-right: 10px;
+  }
+  
+  .search-input {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .search-button {
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .homesearch-container {
+      flex-direction: column;
+    }
+  
+    .search-input {
+      margin-top: 10px; /* Add space between input and button in mobile view */
+    }
+  }
