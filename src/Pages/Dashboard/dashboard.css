@@ -59,27 +59,40 @@
   
   .info-container {
     display: flex;
-    flex-direction: column; /* Change to column for mobile view */
     margin-top: 20px;
     padding:20px;
+    flex-direction: row;
     /* background-color: #601818; */
     align-items: center;
     height: 100%;
     width: 100%;
     overflow: hidden;
+    min-width:fit-content ;
+    
+
+  }
+  .infolabel {
+    margin-bottom: 5px;
+    margin-top: 5px;
+
+  }
+  .value {
+    margin-bottom: 5px;
+    margin-top: 5px;
 
   }
   
+
   .info-box {
     width: 80%; /* Full width for mobile view */
     margin-bottom: 20px; /* Add some spacing between boxes */
     box-sizing: border-box;
-    border: 1px solid #ccc;
+    border: 2px solid #9B9B9B;
+    background-color: #fff;
     border-radius: 4px;
     height: 100%;
     overflow: scroll;
-
-    /* width: 80vw;  */
+margin: 20px;
 
     padding: 15px; /* Adjust padding for better mobile layout */
   }
@@ -90,7 +103,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     height: 100%;
-    overflow: scroll; /* Enable scrolling */
+    overflow: hidden; /* Enable scrolling */
     scrollbar-width: thin; /* For Firefox */
     scrollbar-color: transparent transparent; /* For Firefox */
   }
@@ -122,6 +135,17 @@
   @media (max-width: 768px) {
     .info-box {
       width: 100%; /* Full width for mobile view */
+    min-width:fit-content ;
+
     }
+    .info-container{
+      flex-direction: column;
+    margin-top: 1px;
+    min-width:fit-content ;
+
+
+    }
+    
+
   }
   
