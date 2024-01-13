@@ -55,40 +55,44 @@ const Login = () => {
 
   return (
     <div className="logincontainer">
-      <h2>Login Page</h2>
+      <div style={{backgroundColor:'red',display:"flex",justifyContent:'center',padding:'10px'}}>
+        <h2 style={{ fontSize: "12px",color:'white' }}>TVS Escalation Login</h2>
+      </div>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label className="label" htmlFor="username">
-            Username:
-          </label>
-          <input
-            className="input"
-            type="text"
-            id="username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-          />
-          {errors.username && <span className="error">{errors.username}</span>}
-        </div>
-        <div>
-          <label className="label" htmlFor="password">
-            Password:
-          </label>
-          <input
-            className="input"
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          {errors.password && <span className="error">{errors.password}</span>}
-        </div>
-        <div>
-          <button className="button" type="submit">
-            Login
-          </button>
+        <div style={{ padding: "20px" }}>
+          <div className="inputContainer">
+            <input
+              className="input"
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Username"
+            />
+            {errors.username && (
+              <span className="error">{errors.username}</span>
+            )}
+          </div>
+          <div className="inputContainer">
+            <input
+              className="input"
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+            />
+            {errors.password && (
+              <span className="error">{errors.password}</span>
+            )}
+          </div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <button className="button" type="submit">
+              Login
+            </button>
+          </div>
         </div>
       </form>
     </div>
