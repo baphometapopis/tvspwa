@@ -12,7 +12,7 @@ const List = () => <h2>List Page</h2>;
 function App() {
   return (
     <Router>
-      <div className="container">
+      <div className="App">
         {/* <nav>
           <ul>
             <li>
