@@ -6,6 +6,7 @@ import MakerEscalatePage from "./Pages/MakerEscalatePage/MakerEscalatePage";
 import "./App.css";
 import Home from "./Pages/Home/Home";
 import { ToastContainer } from "react-toastify";
+import ChatComponent from "./Pages/ChatList/Chatlist";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
             element={<MakerEscalatePage />}
           />
           <Route path="/home" element={<Home />} />
+          <Route path="/Chat" element={<ChatComponent />} />
+
           <Route path="/" element={<Login />} />
         </Routes>
       </div>

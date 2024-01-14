@@ -1,0 +1,149 @@
+
+.chat-container {
+ 
+  height: 100%;
+  width: 50%;
+  background-color: #CECECE ;
+  overflow: hidden;
+}
+.chat-container2{
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  padding-bottom: 71px
+}
+
+ .messagecontainer{
+  position: absolute;
+  bottom: 1px;
+  background-color: #092E58;
+  width: 50%;
+  flex-direction: row;
+  display: flex; 
+
+  padding: 10px
+}
+  .from-message {
+    background-color: #f1f1f1;
+    color: #333;
+  }
+  
+  .input-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .message-input {
+    padding: 8px;
+    /* margin-right: 10px; */
+    border: 1px solid #ccc;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+
+    width: 80%;
+
+    outline: none;
+  }
+  
+  .send-button {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    /* border-radius: 5px; */
+    cursor: pointer;
+  }
+  
+  
+/* .box3 {
+  width: 300px;
+  margin: 50px auto;
+  border-radius: 15px;
+  background: #00bfb6;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  font-weight: 900;
+  font-family: arial;
+  position: relative;
+} */
+.box3{
+  margin-right: auto;
+  margin-top: 20px;  
+  margin-left: 20px;
+    width: 300px;
+
+  border-radius: 6px;
+  background: #FFFFFF;
+  color: #4F4F4F;
+  word-wrap: break-word;
+  padding: 20px;
+  font-size: 12px;
+  text-align: center;
+  /* font-weight: 900; */
+  font-family: arial;
+  position: relative;}
+  .box4{
+    margin-left: auto;
+    margin-right: 20px;
+    margin-top: 20px;  
+  word-wrap: break-word;
+
+    width: 300px;
+    min-height: fit-content;
+    font-size: 12px;
+
+    border-radius: 6px;
+    background: #FFEBEB;
+  color: #4F4F4F;
+    padding: 13px;
+    text-align: center;
+    /* font-weight: 900; */
+    font-family: arial;
+    position: relative;}
+
+
+/* speech bubble 13 */
+
+.sb13:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 15px solid #FFEBEB;
+  border-right: 15px solid transparent;
+  border-top: 15px solid #FFEBEB;
+  border-bottom: 15px solid transparent;
+  right: -16px;
+  top: 0px;
+}
+
+
+/* speech bubble 14 */
+
+.sb14:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 15px solid transparent;
+  border-right: 15px solid #FFFFFF;
+  border-top: 15px solid #FFFFFF;
+  border-bottom: 15px solid transparent;
+  left: -16px;
+  top: 0px;
+}
+@media (max-width: 768px) {
+  .chat-container {
+  width: 100%;
+  }
+  .messagecontainer{
+    width: 100%
+  }
+ 
+}

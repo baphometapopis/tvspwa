@@ -226,7 +226,7 @@ const MakerEscalatePage = () => {
             </div>
           ) : (
             <div className="card-container">
-              {escalationList.map((item) => (
+                   {escalationList.map((item) => (
                 <div className="homecard" key={item.id}>
                   <div
                     style={{
@@ -235,11 +235,11 @@ const MakerEscalatePage = () => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <p className="jobid">#{item.job_id}</p>
+                    <p className="jobid">#{item.id}</p>
                     <p className="statustag">{item.esclation_status}</p>
                   </div>
                   <p>{findCategoryname(item.esclated_by_category_id)}</p>
-                  <p className="escalatedby">by {item.esclated_by}</p>
+                  <p className="escalatedby">by {item.from_name}</p>
                   <p>{item.esclated_by_comment}</p>
 
                   <div
@@ -262,7 +262,7 @@ const MakerEscalatePage = () => {
                         alt="Logo"
                         className="supporticon"
                       />
-                      <p className="tobabel"> {item.esclated_to}</p>
+                      <p className="tobabel"> {item.to_name}</p>
                     </span>
 
                     <p className="creationdate">

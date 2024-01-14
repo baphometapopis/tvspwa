@@ -22,11 +22,11 @@ const Home = () => {
   const [error, setError] = useState(null);
 
   const searchOptions = [
-    { value: "Name", label: "Name" },
+    { value: "jobid", label: "Job Id" },
     { value: "customer_mobile_no", label: "Phone Number" },
-    { value: "Email", label: "Email" },
-    { value: "Chassis Number", label: "Chassis Number" },
-    { value: "Vehicle Number", label: "Vehicle Number" },
+    { value: "policy_no", label: "Policy No" },
+    { value: "frame_no", label: "Chassis Number" },
+    { value: "registration_no", label: "Vehicle Number" },
   ];
 
   const [selectedOption, setSelectedOption] = useState(null);
@@ -196,7 +196,15 @@ const Home = () => {
           ) : (
             <div className="card-container">
               {escalationList.map((item) => (
-                <div className="homecard" key={item.id}>
+                <div
+                  className="homecard"
+                  key={item.id}
+                  onClick={() => {
+                    navigate("/chat", {
+                      state: { escdata: item },
+                    });
+                  }}
+                >
                   <div
                     style={{
                       // backgroundColor: "red",
@@ -204,11 +212,11 @@ const Home = () => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <p className="jobid">#{item.job_id}</p>
+                    <p className="jobid">#{item.id}</p>
                     <p className="statustag">{item.esclation_status}</p>
                   </div>
                   <p>{findCategoryname(item.esclated_by_category_id)}</p>
-                  <p className="escalatedby">by {item.esclated_by}</p>
+                  <p className="escalatedby">by {item.from_name}</p>
                   <p>{item.esclated_by_comment}</p>
 
                   <div
@@ -231,7 +239,7 @@ const Home = () => {
                         alt="Logo"
                         className="supporticon"
                       />
-                      <p className="tobabel"> {item.esclated_to}</p>
+                      <p className="tobabel"> {item.to_name}</p>
                     </span>
 
                     <p className="creationdate">
