@@ -10,19 +10,79 @@ import { escalationListApi } from "../../Api/escalationListAPi";
 import { toast } from "react-toastify";
 import supportAgent from "../../Assets/Icons/supportAgent.png";
 import Select from "react-select";
+import { Tooltip } from "@mui/material";
+import { makerAction } from "../../Api/MakerAction";
 
 const MakerEscalatePage = () => {
   const location = useLocation();
   const [searchData] = useState(location?.state?.searchData?.data);
+  const [jobID] = useState(location?.state?.searchData?.data?.jobid);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [issueDescription, setIssueDescription] = useState("");
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [escalationList, setEscalationList] = useState([]);
   const [categoryList, setcategoryList] = useState([]);
   const [loginData, setLoginData] = useState();
+  const [error, setError] = useState(null);
+  const handleSend = async () => {
+    // Check if an option is selected
+    if (!issueDescription.trim() && !selectedOption) {
+      setError("Please describe the issue and select an option");
+      return;
+    } else {
+      setError(null);
+    }
 
-  console.log(searchData);
+    // Clear the error state
 
+    // Call your function with selectedOption and issueDescription
+    // YourFunction(selectedOption, issueDescription);
+
+    // For demonstration purposes, log the values
+
+    // Close the modal
+
+    const data = {
+      esclated_by_comment: issueDescription,
+      esclated_by_category_id: selectedOption.value,
+      job_id: jobID,
+
+      user_id: loginData?.id,
+    };
+    console.log(data);
+
+    const escalateissue = await makerAction(data);
+    if (escalateissue.status) {
+      toast.success("Escalation raised Successfully", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+      fetchEscalationList();
+    } else {
+      toast.error(escalateissue?.message, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+    }
+    console.log(escalateissue);
+
+    console.log("Selected Option:", selectedOption.value, jobID);
+    console.log("Issue Description:", issueDescription);
+
+    // Clear the form fields if needed
+    setSelectedOption(null);
+    setIssueDescription("");
+
+    handleInputFocus();
+    closeModal();
+  };
   const openModal = () => {
     console.log("hiting");
     setModalOpen(true);
@@ -40,7 +100,6 @@ const MakerEscalatePage = () => {
   };
   const fetchEscalationList = async () => {
     const categorydata = await getEscalationCataegoryList();
-    console.log(categorydata);
     if (categorydata.status) {
       setcategoryList(categorydata.data);
     }
@@ -49,7 +108,6 @@ const MakerEscalatePage = () => {
       const decryptdata = decryptData(localData);
       setLoginData(decryptdata);
 
-      console.log(decryptdata.id);
       const data = await escalationListApi(decryptdata?.id);
       if (data?.status) {
         setEscalationList(data.data);
@@ -64,9 +122,15 @@ const MakerEscalatePage = () => {
       }
     }
   };
+  const handleInputFocus = () => {
+    // Clear the error state when the input is focused
+    setError(null);
+  };
+
   useEffect(() => {
     fetchEscalationList();
-  }, [isModalOpen]);
+  }, []);
+  useEffect(() => {}, [isModalOpen, selectedOption, issueDescription]);
   return (
     <div className="dashboardcnt">
       <Header />
@@ -77,12 +141,10 @@ const MakerEscalatePage = () => {
               <p className="modal-header-label">Escalate an Issue</p>
             </div>
             <div style={{ padding: "10px" }}>
-              {categoryList.map((item)=>console.log(item.answer,item.id))}
               <div className="modal-dropdown">
                 <Select
                   className="search-dropdown"
                   options={categoryList.map((item) => ({
-                    
                     label: item.answer,
                     value: item.id,
                   }))}
@@ -91,22 +153,31 @@ const MakerEscalatePage = () => {
                   value={selectedOption}
                   onChange={(selected) => {
                     setSelectedOption(selected);
+                    handleInputFocus();
                   }}
                 />
               </div>
-
-              <div className="modal-description">
-                <textarea
-                  id="issueDescription"
-                  name="issueDescription"
-                  rows="15"
-                />
-              </div>
+              <Tooltip title={error || ""} arrow open={Boolean(error)}>
+                <div className="modal-description">
+                  <textarea
+                    id="issueDescription"
+                    name="issueDescription"
+                    rows="15"
+                    placeholder="Describe the issue"
+                    onChange={(text) => {
+                      setIssueDescription(text.target.value);
+                      handleInputFocus();
+                    }}
+                  />
+                </div>
+              </Tooltip>
             </div>
             {/* Send button */}
 
             <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-              <button className="modal-send">Send</button>
+              <button className="modal-send" onClick={handleSend}>
+                Send
+              </button>
             </div>
 
             {/* <button onClick={closeModal}>Close Modal</button> */}
