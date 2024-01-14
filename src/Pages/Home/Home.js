@@ -7,10 +7,13 @@ import { useNavigate } from "react-router-dom";
 import { escalationListApi } from "../../Api/escalationListAPi";
 import { decryptData } from "../../Utils/cryptoUtils";
 import { toast } from "react-toastify";
-
+import { getEscalationCataegoryList } from "../../Api/getEscalationcategorylist";
+import supportAgent from "../../Assets/Icons/supportAgent.png";
 const Home = () => {
   const navigate = useNavigate();
   const [escalationList, setEscalationList] = useState([]);
+  const [categoryList, setcategoryList] = useState([]);
+
   const [loginData, setLoginData] = useState();
   const [userName, setUserName] = useState("");
 
@@ -24,6 +27,13 @@ const Home = () => {
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const findCategoryname = (category_id) => {
+    const answers = categoryList
+      .filter((item) => item.id === category_id)
+      .map((item) => item.answer);
+
+    return answers;
+  };
 
   const handleSearch = () => {
     // Handle the search logic based on selectedOption and searchQuery
@@ -31,6 +41,11 @@ const Home = () => {
   };
 
   const fetchEscalationList = async () => {
+    const categorydata = await getEscalationCataegoryList();
+    console.log(categorydata);
+    if (categorydata.status) {
+      setcategoryList(categorydata.data);
+    }
     const localData = localStorage.getItem("LoggedInUser");
     if (localData !== null || localData !== undefined) {
       const decryptdata = decryptData(localData);
@@ -85,7 +100,16 @@ const Home = () => {
         style={{ backgroundColor: "red", width: "100%", padding: 20 }}
       >
         <span style={{ display: "inline-block" }}>
-          <p style={{ fontWeight: "600", fontSize: "22px",color:'white',fontFamily:'sans-serif' }}>WelcomeBack,</p>
+          <p
+            style={{
+              fontWeight: "600",
+              fontSize: "22px",
+              color: "white",
+              fontFamily: "sans-serif",
+            }}
+          >
+            WelcomeBack,
+          </p>
         </span>
         {userName}
       </div>
@@ -124,9 +148,52 @@ const Home = () => {
             <div className="card-container">
               {escalationList.map((item) => (
                 <div className="homecard" key={item.id}>
-                  <h4>Job ID: {item.job_id}</h4>
-                  <p>Comment: {item.esclated_by_comment}</p>
-                  <p>Status: {item.esclation_status}</p>
+                  <div
+                    style={{
+                      // backgroundColor: "red",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <p className="jobid">#{item.job_id}</p>
+                    <p className="statustag">{item.esclation_status}</p>
+                  </div>
+                  <p>{findCategoryname(item.esclated_by_category_id)}</p>
+                  <p className="escalatedby">by {item.esclated_by}</p>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "5px",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "5px",
+                      }}
+                    >
+                      <img
+                        src={supportAgent}
+                        alt="Logo"
+                        className="supporticon"
+                      />
+                      <p className="tobabel"> {item.esclated_to}</p>
+                    </span>
+
+                    <p className="creationdate">
+                      {new Date(item.created_at).toLocaleString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: true,
+                      })}
+                    </p>
+                  </div>
                   {/* Add more fields as needed */}
                 </div>
               ))}

@@ -4,8 +4,8 @@
     display: flex;
     font-size: 16px;
     height: 100vh;
-    width: 100vw;
-    line-height: 1.5;
+    width: 100vw; 
+    /* line-height: 1.5; */
     align-items: center;
     flex-direction: column;
 
@@ -23,7 +23,7 @@
     overflow: hidden;
 
 
-    width: 85%;
+    width: 50%;
 
   }
 
@@ -33,21 +33,43 @@
     gap: 10px;
     flex-direction: column;
     align-items: center;
-padding-bottom: 95px;
+padding-bottom: 150px;
   }
   
   .homecard {
     /* margin: 5px; */
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid #9B9B9B;
     border-radius: 8px;
     padding: 15px;
     width: 100%; /* Set a fixed width for the cards */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
+  .statustag{
+    font-size: 14px;
+  }
+  .jobid{
+    color: #6D6D6D;
+    margin: 2px;
+
+  }
+  .escalatedby{
+    color: #6D6D6D;
+    font-size: 10px;
+
+
+  }
+  .supporticon{
+    width: 15px;
+    height: 15px;
+
+  }
   
 
   .homesearch-container {
+    /* background-color: red; */
+    justify-content: space-around;
+    width: 100%;
     display: flex;
     align-items: center;
     padding: 10px; /* Add padding to the search container */
@@ -57,12 +79,26 @@ padding-bottom: 95px;
   .search-dropdown {
     margin-right: 10px;
   }
-  
-  .search-input {
-    flex: 1;
-    margin-right: 10px;
+  .tobabel{
+    color: #696969;
+    font-size: 12px
+
   }
   
+  .search-input {
+
+    padding: 10px;
+    border: 0.5px solid #9B9B9B;
+width: 60%;    margin: 10px;
+  }
+  .creationdate{
+    color: #696969;
+    font-size: 12px;
+    font-weight: 600;
+
+
+
+  }
   .search-button {
     cursor: pointer;
     background-color: #007bff;
@@ -77,7 +113,9 @@ padding-bottom: 95px;
     .homesearch-container {
       flex-direction: column;
     }
-  
+  .scrollable-container{
+    padding-bottom: 95px;
+  }
     .search-input {
       margin-top: 10px; /* Add space between input and button in mobile view */
     }
