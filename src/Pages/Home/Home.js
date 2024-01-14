@@ -6,9 +6,12 @@ import Header from "../../Component/Header/Header";
 import { useNavigate } from "react-router-dom";
 import { escalationListApi } from "../../Api/escalationListAPi";
 import { decryptData } from "../../Utils/cryptoUtils";
+import Tooltip from "@mui/material/Tooltip";
+
 import { toast } from "react-toastify";
 import { getEscalationCataegoryList } from "../../Api/getEscalationcategorylist";
 import supportAgent from "../../Assets/Icons/supportAgent.png";
+import { searchEscalationData } from "../../Api/searchEscalationData";
 const Home = () => {
   const navigate = useNavigate();
   const [escalationList, setEscalationList] = useState([]);
@@ -16,10 +19,11 @@ const Home = () => {
 
   const [loginData, setLoginData] = useState();
   const [userName, setUserName] = useState("");
+  const [error, setError] = useState(null);
 
   const searchOptions = [
     { value: "Name", label: "Name" },
-    { value: "Phone Number", label: "Phone Number" },
+    { value: "customer_mobile_no", label: "Phone Number" },
     { value: "Email", label: "Email" },
     { value: "Chassis Number", label: "Chassis Number" },
     { value: "Vehicle Number", label: "Vehicle Number" },
@@ -35,8 +39,42 @@ const Home = () => {
     return answers;
   };
 
-  const handleSearch = () => {
-    // Handle the search logic based on selectedOption and searchQuery
+  const handleSearch = async () => {
+    // Check if the selected option is null or the searchQuery is empty
+    if (!selectedOption || !searchQuery.trim()) {
+      // Set an error state
+      setError("Please select an option and enter a valid search term.");
+      return;
+    }
+
+    // Reset error state if no error
+    setError(null);
+
+    // Continue with your search logic
+    const searchdata = await searchEscalationData(
+      selectedOption?.value,
+      searchQuery
+    );
+    if (searchdata?.status) {
+      navigate("MakerEscalatePage", { state: { searchData: searchdata } });
+
+      toast.success(searchdata?.message, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+    } else {
+      toast.error(searchdata?.message, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+    }
+
     console.log(`Searching for ${selectedOption?.value}: ${searchQuery}`);
   };
 
@@ -67,6 +105,11 @@ const Home = () => {
       }
     }
   };
+  const handleInputFocus = () => {
+    // Clear the error state when the input is focused
+    setError(null);
+  };
+
   const checkLoginStatus = useCallback(async () => {
     const data = await localStorage.getItem("LoggedInUser");
     if (data === null || data === undefined) {
@@ -122,15 +165,21 @@ const Home = () => {
               isClearable
               placeholder="Select an option"
               value={selectedOption}
-              onChange={(selected) => setSelectedOption(selected)}
+              onChange={(selected) => {
+                setSelectedOption(selected);
+                handleInputFocus();
+              }}
             />
-            <input
-              type="text"
-              className="search-input"
-              placeholder={`Enter ${selectedOption?.label || "search term"}`}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            <Tooltip title={error || ""} arrow open={Boolean(error)}>
+              <input
+                type="text"
+                className="search-input"
+                placeholder={`Enter ${selectedOption?.label || "search term"}`}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={handleInputFocus} // Clear error when input is focused
+              />
+            </Tooltip>
             <button className="search-button" onClick={handleSearch}>
               Search {selectedOption?.label || ""}
             </button>
