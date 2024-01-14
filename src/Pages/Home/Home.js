@@ -160,6 +160,8 @@ const Home = () => {
                   </div>
                   <p>{findCategoryname(item.esclated_by_category_id)}</p>
                   <p className="escalatedby">by {item.esclated_by}</p>
+                  <p>{item.esclated_by_comment}</p>
+
                   <div
                     style={{
                       display: "flex",
