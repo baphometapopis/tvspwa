@@ -12,7 +12,9 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-end;
-  padding-bottom: 71px
+  padding-bottom: 71px;
+  overflow-y: auto;
+
 }
 
  .messagecontainer{

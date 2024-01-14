@@ -9,7 +9,7 @@ export const fetchChats = async (data) => {
 
     const result = await makeApiRequest("esclationChatList", "POST", body);
     const resdata = JSON.parse(result);
-
+    console.log(resdata, "sdsdsd");
     return resdata;
   } catch (error) {
     // Handle errors

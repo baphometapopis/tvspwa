@@ -6,6 +6,7 @@ import Header from "../../Component/Header/Header";
 import { useLocation } from "react-router-dom";
 import { decryptData } from "../../Utils/cryptoUtils";
 import { fetchChats } from "../../Api/fetchChats";
+import { checkerAction } from "../../Api/checkAction";
 // import bgImage from "../../Assets/bgImage/chatBackground.jpeg";
 
 const ChatComponent = () => {
@@ -15,6 +16,7 @@ const ChatComponent = () => {
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [loginData, setloginData] = useState("");
 
   const findOppositeUserId = (targetUserId, data) => {
     if (data.esclated_by === targetUserId) {
@@ -28,9 +30,9 @@ const ChatComponent = () => {
   const callChatAPi = useCallback(async () => {
     const localData = localStorage.getItem("LoggedInUser");
     const decryptdata = decryptData(localData);
+    setloginData(decryptdata);
 
-    const targetUserId = "161"; // Replace with the desired user ID
-    const oppositeUserId = findOppositeUserId(targetUserId, escalationData);
+    const oppositeUserId = findOppositeUserId(decryptdata?.id, escalationData);
     console.log(typeof escalationData);
     console.log("Opposite User ID:", oppositeUserId);
     const data = {
@@ -42,12 +44,30 @@ const ChatComponent = () => {
     console.log(chatdata);
     setMessages(chatdata?.data);
   }, [escalationData]);
-  const handleSendMessage = () => {
-    if (newMessage.trim() !== "") {
-      setMessages([...messages, { text: newMessage, type: "to" }]);
-      setNewMessage("");
+  const handleSendMessage = async () => {
+    if (loginData.admin_role === "escalation_checker") {
+      if (newMessage !== "") {
+        console.log("you are checker");
+        const data = {
+          esclated_to_comment: newMessage,
+          esclation_status: "wip",
+          user_id: loginData?.id,
+          esclation_id: escalationData?.id,
+        };
+        console.log(data);
+  
+        // Assuming checkerAction is an asynchronous function
+        const senddata = await checkerAction(data);
+        console.log(senddata);
+  
+        // After sending the message, fetch the updated chat data
+        callChatAPi();
+      }
+    } else {
+      console.log("you are maker", loginData.admin_role);
     }
   };
+  
 
   function formatDate(inputDate) {
     const options = {
@@ -77,37 +97,39 @@ const ChatComponent = () => {
         // //   backgroundPosition: "",
         // }}
       >
-        <div className="chat-container2">
-          {console.log(messages, ";kljikhugjyhfgdfgfgyjhukijl")}
-          {messages
-            .slice()
-            .reverse()
-            .map((message, index) => (
-              <div
-                key={index}
-                className={` ${
-                  message.type === "from" ? " box3 sb14" : " box4 sb13"
-                }`}
-              >
-                <p style={{ paddingBottom: "15px" }}>
-                  {message.type !== "to"
-                    ? message.esclated_to_comment
-                    : message.esclated_by_comment}
-                </p>
-                <p
-                  style={{
-                    fontSize: "12px",
-                    position: "absolute",
-                    right: "10px",
-                    bottom: "2px",
-                  }}
+        {messages && (
+          <div className="chat-container2">
+            {messages
+              .slice()
+              .reverse()
+              .map((message, index) => (
+                <div
+                  key={index}
+                  className={` ${
+                    message.type === "from" ? " box3 sb14" : " box4 sb13"
+                  }`}
                 >
-                  {" "}
-                  {formatDate(message?.created_at)}
-                </p>
-              </div>
-            ))}
-        </div>
+
+                    {console.log(message.type, message.esclated_to_comment,message.esclated_by_comment)}
+                  <p style={{ paddingBottom: "15px" }}>
+                    {message.type === "from"
+                      ? message?.esclated_by_comment
+                      : message?.esclated_to_comment}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      position: "absolute",
+                      right: "10px",
+                      bottom: "2px",
+                    }}
+                  >
+                    {formatDate(message?.created_at)}
+                  </p>
+                </div>
+              ))}
+          </div>
+        )}
         <div className="messagecontainer">
           <input
             type="text"

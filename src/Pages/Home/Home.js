@@ -90,7 +90,6 @@ const Home = () => {
       setLoginData(decryptdata);
       setUserName(`${decryptdata?.first_name}${decryptdata?.last_name} `);
 
-      console.log(decryptdata.id);
       const data = await escalationListApi(decryptdata?.id);
       if (data?.status) {
         setEscalationList(data.data);
