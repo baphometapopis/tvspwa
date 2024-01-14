@@ -61,9 +61,9 @@ const Login = () => {
       const loginResponse = await login(formData.username, formData.password);
       console.log(loginResponse?.status);
 
-      if (loginResponse.status) {
+      if (loginResponse?.status) {
         // Successful login
-        toast.success("Login successful", {
+        toast.success(loginResponse?.message, {
           position: "bottom-right",
           autoClose: 3000, // Set the duration for the toast to be displayed
           hideProgressBar: false,
@@ -73,7 +73,13 @@ const Login = () => {
         // e.g., useNavigate("/MakerEscalatePage");
       } else {
         // Failed login
-        toast.error("Username and password do not match");
+        toast.error(loginResponse?.message, {
+          position: "bottom-right",
+          autoClose: 3000, // Set the duration for the toast to be displayed
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
       }
     } catch (error) {
       console.error("Error during login:", error);
