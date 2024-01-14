@@ -2,10 +2,14 @@
 
 import React, { useState } from "react";
 import "./login.css"; // Import the CSS file
+import { login } from "../../Api/loginApi";
+import { toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
 // import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -48,34 +52,29 @@ const Login = () => {
     }
 
     // Add your authentication logic here (e.g., API call, etc.)
-    handleLoginAPi();
+    handleLoginApi();
     console.log("Form submitted:", formData);
   };
 
-  const handleLoginAPi = async () => {
-    // const loginResponse = await login(formData.username, formData.password);
-    // console.log(loginResponse);
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Basic " + btoa("indicosmic:indicosmic"));
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+  const handleLoginApi = async () => {
+    try {
+      const loginResponse = await login(formData.username, formData.password);
+      console.log(loginResponse?.status)
 
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("email_id", "sush.rokade@gmail.com");
-    urlencoded.append("password", "sush.rokade@gmail.com");
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
-
-    fetch("https://www.tvsservice.com/Escalation_api/login", requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
-
-    // Navigation("/MakerEscalatePage");
+      if (loginResponse.status) {
+        // Successful login
+        toast.success("Login successful");
+        // Navigate to the desired page using your navigation logic
+        // e.g., useNavigate("/MakerEscalatePage");
+      } else {
+        // Failed login
+        toast.error("Username and password do not match");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      // Handle other errors if needed
+      toast.error("An error occurred during login");
+    }
   };
 
   return (

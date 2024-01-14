@@ -5,15 +5,17 @@ import Login from "./Pages/Login/Login";
 import MakerEscalatePage from "./Pages/MakerEscalatePage/MakerEscalatePage";
 import "./App.css";
 import Home from "./Pages/Home/Home";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-// const Login = () => <h2>Login Page</h2>;
-// const Dashboard = () => <h2>Dashboard Page</h2>;
 const List = () => <h2>List Page</h2>;
 
 function App() {
   return (
     <Router>
       <div className="App">
+        <ToastContainer />
+
         {/* <nav>
           <ul>
             <li>

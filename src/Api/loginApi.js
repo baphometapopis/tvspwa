@@ -7,8 +7,9 @@ export const login = async (email_id, password) => {
     body.append("password", password);
 
     const result = await makeApiRequest("login", "POST", body);
-    console.log(result);
-    return result;
+    const data = JSON.parse(result);
+
+    return data;
   } catch (error) {
     // Handle errors
     console.log(error);
