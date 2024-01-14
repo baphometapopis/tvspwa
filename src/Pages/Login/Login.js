@@ -59,12 +59,17 @@ const Login = () => {
   const handleLoginApi = async () => {
     try {
       const loginResponse = await login(formData.username, formData.password);
-      console.log(loginResponse?.status)
+      console.log(loginResponse?.status);
 
       if (loginResponse.status) {
         // Successful login
-        toast.success("Login successful");
-        // Navigate to the desired page using your navigation logic
+        toast.success("Login successful", {
+          position: "bottom-right",
+          autoClose: 3000, // Set the duration for the toast to be displayed
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+        }); // Navigate to the desired page using your navigation logic
         // e.g., useNavigate("/MakerEscalatePage");
       } else {
         // Failed login
