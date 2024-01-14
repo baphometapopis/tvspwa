@@ -108,8 +108,19 @@ width: 60%;    margin: 10px;
     border-radius: 4px;
   }
   
+  @media (max-width: 1073px) {
+    .homecnt2{
+      width: 100%;
+
+    }  
+  }
+
   /* Mobile responsiveness */
   @media (max-width: 768px) {
+    .homecnt2{
+      width: 100%;
+
+    }
     .homesearch-container {
       flex-direction: column;
     }
@@ -117,6 +128,7 @@ width: 60%;    margin: 10px;
     padding-bottom: 95px;
   }
     .search-input {
+      width:95%;
       margin-top: 10px; /* Add space between input and button in mobile view */
     }
   }
