@@ -1,10 +1,13 @@
 // Home.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import "./Home.css"; // Import the CSS file
 import Header from "../../Component/Header/Header";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const data = [
     { id: 1, title: "Item 1" },
     { id: 2, title: "Item 2" },
@@ -12,7 +15,6 @@ const Home = () => {
     { id: 4, title: "Item 4" },
     { id: 4, title: "Item 4" },
     { id: 4, title: "Item 4" },
-
   ];
 
   const searchOptions = [
@@ -30,42 +32,55 @@ const Home = () => {
     // Handle the search logic based on selectedOption and searchQuery
     console.log(`Searching for ${selectedOption?.value}: ${searchQuery}`);
   };
+  useEffect(() => {
+    const handleBack = () => {
+      // Replace the current entry in the navigation stack with the home screen
+      navigate("/Home", { replace: true });
+    };
 
+    window.addEventListener("popstate", handleBack);
+
+    return () => {
+      window.removeEventListener("popstate", handleBack);
+    };
+  }, [navigate]);
+
+  
   return (
     <div className="Homecnt">
       <Header />
 
       <div className="homecnt2">
-          <div className="homesearch-container">
-            <Select
-              className="search-dropdown"
-              options={searchOptions}
-              isClearable
-              placeholder="Select an option"
-              value={selectedOption}
-              onChange={(selected) => setSelectedOption(selected)}
-            />
-            <input
-              type="text"
-              className="search-input"
-              placeholder={`Enter ${selectedOption?.label || "search term"}`}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button className="search-button" onClick={handleSearch}>
-              Search {selectedOption?.label || ""}
-            </button>
-          </div>
+        <div className="homesearch-container">
+          <Select
+            className="search-dropdown"
+            options={searchOptions}
+            isClearable
+            placeholder="Select an option"
+            value={selectedOption}
+            onChange={(selected) => setSelectedOption(selected)}
+          />
+          <input
+            type="text"
+            className="search-input"
+            placeholder={`Enter ${selectedOption?.label || "search term"}`}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button className="search-button" onClick={handleSearch}>
+            Search {selectedOption?.label || ""}
+          </button>
+        </div>
 
-          <div className="scrollable-container" style={{ height: "100%" }}>
-                <div className="card-container">
-                    {data.map((item) => (
-                        <div className="homecard" key={item.id}>
-                            <h4>{item.title}</h4>
-                        </div>
-                    ))}
-                </div>
-             </div>
+        <div className="scrollable-container" style={{ height: "100%" }}>
+          <div className="card-container">
+            {data.map((item) => (
+              <div className="homecard" key={item.id}>
+                <h4>{item.title}</h4>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

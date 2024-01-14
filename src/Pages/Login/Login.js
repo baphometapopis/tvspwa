@@ -1,15 +1,20 @@
 // Login.js
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./login.css"; // Import the CSS file
 import { login } from "../../Api/loginApi";
 import { toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
-// import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { encryptData } from "../../Utils/cryptoUtils";
+import { setItemToLocalStorage } from "../../Utils/localStorageUtils";
 
 const Login = () => {
+  const navigation = useNavigate();
+  const location = useLocation();
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -56,26 +61,45 @@ const Login = () => {
     console.log("Form submitted:", formData);
   };
 
+  const checkLoginStatus = async () => {
+    const data = await localStorage.getItem("LoggedInUser");
+    if (data === null || data === undefined) {
+      navigation("/");
+    } else {
+      navigation("/Home");
+    }
+  };
   const handleLoginApi = async () => {
     try {
       const loginResponse = await login(formData.username, formData.password);
-      console.log(loginResponse?.status);
 
       if (loginResponse?.status) {
-        // Successful login
-        toast.success(loginResponse?.message, {
-          position: "bottom-right",
-          autoClose: 3000, // Set the duration for the toast to be displayed
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-        }); // Navigate to the desired page using your navigation logic
-        // e.g., useNavigate("/MakerEscalatePage");
+        const encryptedData = encryptData(loginResponse.data);
+
+        // Attempt to store data in local storage
+        // Check if the user is logged in after storing data
+        const isSetSuccessful = setItemToLocalStorage(
+          "LoggedInUser",
+          encryptedData
+        );
+
+        if (isSetSuccessful) {
+          // If the user is logged in, navigate to the home page
+          toast.success(loginResponse?.message, {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+          });
+
+          navigation("/Home");
+        }
       } else {
         // Failed login
         toast.error(loginResponse?.message, {
           position: "bottom-right",
-          autoClose: 3000, // Set the duration for the toast to be displayed
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -87,7 +111,20 @@ const Login = () => {
       toast.error("An error occurred during login");
     }
   };
-
+  useEffect(() => {
+    // Display the message if it exists in the location state
+    if (location.state && location.state.message) {
+      // You can use your notification or alert mechanism here
+      toast.error(location?.state?.message, {
+        position: "bottom-right",
+        autoClose: 3000, // Set the duration for the toast to be displayed
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+    }
+    checkLoginStatus();
+  }, [location.state]);
   return (
     <div className="logincontainer">
       <div
