@@ -1,6 +1,6 @@
 // Login.js
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./login.css"; // Import the CSS file
 import { login } from "../../Api/loginApi";
 import { toast } from "react-toastify";
@@ -61,14 +61,14 @@ const Login = () => {
     console.log("Form submitted:", formData);
   };
 
-  const checkLoginStatus = async () => {
+  const checkLoginStatus = useCallback(async () => {
     const data = await localStorage.getItem("LoggedInUser");
-    if (data === null || data === undefined) {
+    if (data === "" || data === undefined) {
       navigation("/");
     } else {
       navigation("/Home");
     }
-  };
+  }, [navigation]);
   const handleLoginApi = async () => {
     try {
       const loginResponse = await login(formData.username, formData.password);
@@ -124,7 +124,7 @@ const Login = () => {
       });
     }
     checkLoginStatus();
-  }, [location.state]);
+  }, [location.state, checkLoginStatus]);
   return (
     <div className="logincontainer">
       <div
