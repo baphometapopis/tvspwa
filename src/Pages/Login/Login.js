@@ -61,9 +61,9 @@ const Login = () => {
     console.log("Form submitted:", formData);
   };
 
-  const checkLoginStatus = useCallback(async () => {
-    const data = await localStorage.getItem("LoggedInUser");
-    if (data === "" || data === undefined) {
+  const checkLoginStatus = useCallback(() => {
+    const data = localStorage.getItem("LoggedInUser");
+    if (data === null || data === undefined) {
       navigation("/");
     } else {
       navigation("/Home");
