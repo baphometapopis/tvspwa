@@ -33,7 +33,6 @@ const ChatComponent = () => {
     const localData = localStorage.getItem("LoggedInUser");
     const decryptdata = decryptData(localData);
     setloginData(decryptdata);
-
     const oppositeUserId = findOppositeUserId(decryptdata?.id, escalationData);
     console.log(typeof escalationData);
     console.log("Opposite User ID:", oppositeUserId);
@@ -47,6 +46,8 @@ const ChatComponent = () => {
     setMessages(chatdata?.data);
   }, [escalationData]);
   const handleSendMessage = async () => {
+    console.log(selectedStatus);
+
     if (loginData.admin_role === "escalation_checker") {
       if (newMessage !== "") {
         console.log("you are checker");
@@ -209,8 +210,6 @@ const ChatComponent = () => {
 };
 
 export default ChatComponent;
-
-
 
 /*  {messages && (
           <div className="chat-container2">
