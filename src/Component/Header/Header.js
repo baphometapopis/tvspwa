@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import "./Header.css"; // Import the CSS file
 import Logo from "../../Assets/Logo/TVS-Motor-Company.png";
 import avatarImage from "../../Assets/Image-60.png"; // Import your avatar image
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleAvatarClick = () => {
@@ -13,6 +16,8 @@ const Header = () => {
   const handleLogout = () => {
     // Clear local storage and perform logout actions
     localStorage.clear();
+    navigate("/");
+
     // You may want to redirect the user to the login page or perform other logout actions here
   };
 
@@ -27,7 +32,10 @@ const Header = () => {
         />
         {isDropdownOpen && (
           <div className="dropdown-menu">
-            <div className="menu-item" onClick={() => console.log("Username clicked")}>
+            <div
+              className="menu-item"
+              onClick={() => console.log("Username clicked")}
+            >
               Username
             </div>
             <div className="menu-item" onClick={handleLogout}>
