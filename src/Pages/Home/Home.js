@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { escalationListApi } from "../../Api/escalationListAPi";
 import { decryptData } from "../../Utils/cryptoUtils";
 import Tooltip from "@mui/material/Tooltip";
+import chat from "../../Assets/Icons/chat.png";
+import viewData from "../../Assets/Icons/viewData.png";
 
 import { toast } from "react-toastify";
 import { getEscalationCataegoryList } from "../../Api/getEscalationcategorylist";
@@ -39,21 +41,23 @@ const Home = () => {
     return answers;
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async (prop, id) => {
+    console.log(prop, id);
     // Check if the selected option is null or the searchQuery is empty
-    if (!selectedOption || !searchQuery.trim()) {
-      // Set an error state
-      setError("Please select an option and enter a valid search term.");
-      return;
+    if (prop !== "ViewDocument") {
+      if (!selectedOption || !searchQuery.trim()) {
+        // Set an error state
+        setError("Please select an option and enter a valid search term.");
+        return;
+      }
     }
 
     // Reset error state if no error
     setError(null);
 
-    // Continue with your search logic
     const searchdata = await searchEscalationData(
-      selectedOption?.value,
-      searchQuery
+      prop === "ViewDocument" ? searchOptions[0]?.value : selectedOption?.value,
+      prop === "ViewDocument" ? id : searchQuery
     );
     if (searchdata?.status) {
       navigate("MakerEscalatePage", { state: { searchData: searchdata } });
@@ -73,6 +77,8 @@ const Home = () => {
         closeOnClick: true,
         pauseOnHover: true,
       });
+      setSelectedOption(null);
+      setSearchQuery("");
     }
 
     console.log(`Searching for ${selectedOption?.value}: ${searchQuery}`);
@@ -185,7 +191,7 @@ const Home = () => {
           </div>
         )}
 
-        <div className="scrollable-container">
+        <div className="scrollable-container "  style={{marginTop:'10px'}}>
           {escalationList.length === 0 ? (
             <div className="no-cases-message">
               {loginData?.admin_role === "escalation_maker"
@@ -195,29 +201,52 @@ const Home = () => {
           ) : (
             <div className="card-container">
               {escalationList.map((item) => (
-                <div
-                  className="homecard"
-                  key={item.id}
-                  onClick={() => {
-                    navigate("/chat", {
-                      state: { escdata: item },
-                    });
-                  }}
-                >
+                <div className="homecard" key={item.id}>
                   <div
                     style={{
-                      // backgroundColor: "red",
                       display: "flex",
                       justifyContent: "space-between",
                     }}
                   >
                     <p className="jobid">#{item.id}</p>
-                    <p className="statustag">{item.esclation_status}</p>
+                    <div style={{ flexDirection: "row", display: "flex" }}>
+                      <img
+                        src={viewData}
+                        onClick={() => {
+                          handleSearch("ViewDocument", item?.job_id);
+                        }}
+                        alt="Logo"
+                        className="viewData"
+                      />
+                      <p className="statustag">{item.esclation_status}</p>
+                    </div>
                   </div>
-                  <p>{findCategoryname(item.esclated_by_category_id)}</p>
-                  <p className="escalatedby">by {item.from_name}</p>
-                  <p>{item.esclated_by_comment}</p>
+                  <div
+                    style={{
+                      paddingTop: "5px",
+                      paddingBottom: "5px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div>
+                      <p className="escalatedby">by {item.from_name}</p>
 
+                      <p>{findCategoryname(item.esclated_by_category_id)}</p>
+                    </div>
+                    <img
+                      src={chat}
+                      alt="Logo"
+                      onClick={() => {
+                        navigate("/chat", {
+                          state: { escdata: item },
+                        });
+                      }}
+                      className="chatICon"
+                    />
+                  </div>
+                  {/* <p>{item.esclated_by_comment}</p> */}
                   <div
                     style={{
                       display: "flex",
@@ -240,7 +269,6 @@ const Home = () => {
                       />
                       <p className="tobabel"> {item.to_name}</p>
                     </span>
-
                     <p className="creationdate">
                       {new Date(item.created_at).toLocaleString("en-US", {
                         month: "short",
@@ -252,7 +280,6 @@ const Home = () => {
                       })}
                     </p>
                   </div>
-                  {/* Add more fields as needed */}
                 </div>
               ))}
             </div>

@@ -9,6 +9,8 @@ import { decryptData } from "../../Utils/cryptoUtils";
 import { escalationListApi } from "../../Api/escalationListAPi";
 import { toast } from "react-toastify";
 import supportAgent from "../../Assets/Icons/supportAgent.png";
+import chat from "../../Assets/Icons/chat.png";
+
 import Select from "react-select";
 import { Tooltip } from "@mui/material";
 import { makerAction } from "../../Api/MakerAction";
@@ -27,6 +29,19 @@ const MakerEscalatePage = () => {
   const [categoryList, setcategoryList] = useState([]);
   const [loginData, setLoginData] = useState();
   const [error, setError] = useState(null);
+  const [selectedTab, setSelectedTab] = useState("cases"); // Default tab is "cases"
+  // const [activeStep, setActiveStep] = useState(0);
+  const steps = [
+    " Choose Category",
+    "Provide Details",
+    "Confirm and Submit",
+    "Confirm and Submit",
+    "Confirm and Submit",
+    "onfirm and Submit",
+    "Confirm and Submit",
+    "Confirm and Submit",
+    "Confirm and Submit",
+  ];
   const handleSend = async () => {
     // Check if an option is selected
     if (!issueDescription.trim() && !selectedOption) {
@@ -99,6 +114,9 @@ const MakerEscalatePage = () => {
       .map((item) => item.answer);
 
     return answers;
+  };
+  const handleTabClick = (tabName) => {
+    setSelectedTab(tabName);
   };
   const fetchEscalationList = async () => {
     const categorydata = await getEscalationCataegoryList();
@@ -216,81 +234,131 @@ const MakerEscalatePage = () => {
               </div>
             </div>
           </div>
-          <button className="escalatebutton" onClick={openModal} type="submit">
-            Escalate
-          </button>
+
+          {loginData?.admin_role === "escalation_maker" && (
+            <button
+              className="escalatebutton"
+              onClick={openModal}
+              type="submit"
+            >
+              Escalate
+            </button>
+          )}
+        </div>
+
+        <div className="top-tabs">
+          <div
+            className={`top-tab ${selectedTab === "cases" ? "active" : ""}`}
+            onClick={() => handleTabClick("cases")}
+          >
+            List
+          </div>
+          <div
+            className={`top-tab ${selectedTab === "no-cases" ? "active" : ""}`}
+            onClick={() => handleTabClick("no-cases")}
+          >
+            Progress
+          </div>
         </div>
 
         <div className="scrollable-container">
-          {escalationList.length === 0 ? (
-            <div className="no-cases-message">
-              {loginData?.admin_role === "escalation_maker"
-                ? "No pending cases"
-                : "No cases have been assigned to you"}
-            </div>
-          ) : (
-            <div className="card-container">
-              {escalationList.map((item) => (
-                <div
-                  className="homecard"
-                  key={item.id}
-                  onClick={() => {
-                    navigate("/chat", {
-                      state: { escdata: item },
-                    });
-                  }}
-                >
-                  <div
-                    style={{
-                      // backgroundColor: "red",
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <p className="jobid">#{item.id}</p>
-                    <p className="statustag">{item.esclation_status}</p>
-                  </div>
-                  <p>{findCategoryname(item.esclated_by_category_id)}</p>
-                  <p className="escalatedby">by {item.from_name}</p>
-                  <p>{item.esclated_by_comment}</p>
+          {selectedTab === "cases" ? (
+            escalationList.length === 0 ? (
+              <div className="no-cases-message">
+                {loginData?.admin_role === "escalation_maker"
+                  ? "No pending cases"
+                  : "No cases have been assigned to you"}
+              </div>
+            ) : (
+              <div className="card-container">
+                {escalationList.map((item) => (
+                  <div className="homecard" key={item.id}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <p className="jobid">#{item.id}</p>
+                      <p className="statustag">{item.esclation_status}</p>
+                    </div>
+                    <div
+                      style={{
+                        paddingTop: "5px",
+                        paddingBottom: "5px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div>
+                        <p className="escalatedby">by {item.from_name}</p>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "5px",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <span
+                        <p>{findCategoryname(item.esclated_by_category_id)}</p>
+                      </div>
+                      <img src={chat} alt="Logo"  onClick={() => {
+                      navigate("/chat", {
+                        state: { escdata: item },
+                      });
+                    }} className="chatICon" />
+                    </div>
+                    {/* <p>{item.esclated_by_comment}</p> */}
+                    <div
                       style={{
                         display: "flex",
                         alignItems: "center",
                         gap: "5px",
+                        justifyContent: "space-between",
                       }}
                     >
-                      <img
-                        src={supportAgent}
-                        alt="Logo"
-                        className="supporticon"
-                      />
-                      <p className="tobabel"> {item.to_name}</p>
-                    </span>
-
-                    <p className="creationdate">
-                      {new Date(item.created_at).toLocaleString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                        hour: "numeric",
-                        minute: "numeric",
-                        hour12: true,
-                      })}
-                    </p>
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "5px",
+                        }}
+                      >
+                        <img
+                          src={supportAgent}
+                          alt="Logo"
+                          className="supporticon"
+                        />
+                        <p className="tobabel"> {item.to_name}</p>
+                      </span>
+                      <p className="creationdate">
+                        {new Date(item.created_at).toLocaleString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })}
+                      </p>
+                    </div>
                   </div>
-                  {/* Add more fields as needed */}
+                ))}
+              </div>
+            )
+          ) : (
+            <div className="vertical-stepper-container">
+              <div className="vertical-bar"></div>
+              <div className="content-container">
+                <div className="card-container">
+                  {steps.map((step, index) => (
+                    <div key={index} className="card">
+                      <div className={"step"}>
+                        <div className="step-number">
+                          {steps.length - index}
+                        </div>
+                        <div className="step-content">{step}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+                <div className="horizontal-line"></div>
+                {/* Additional card content goes here */}
+              </div>
             </div>
           )}
         </div>
