@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import "./MakerEscalatePage.css"; // Import the CSS file
 import Header from "../../Component/Header/Header";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getEscalationCataegoryList } from "../../Api/getEscalationcategorylist";
 import { decryptData } from "../../Utils/cryptoUtils";
 import { escalationListApi } from "../../Api/escalationListAPi";
@@ -14,6 +14,8 @@ import { Tooltip } from "@mui/material";
 import { makerAction } from "../../Api/MakerAction";
 
 const MakerEscalatePage = () => {
+  const navigate = useNavigate();
+
   const location = useLocation();
   const [searchData] = useState(location?.state?.searchData?.data);
   const [jobID] = useState(location?.state?.searchData?.data?.jobid);
@@ -187,29 +189,31 @@ const MakerEscalatePage = () => {
 
       <div className="info-container">
         <div className="info-box">
-          <div style={{ display: "flex", padding: "20px" }}>
-            <div className="infolabels-container">
-              <div className="infolabel">Name:</div>
-              <div className="infolabel">Phone No:</div>
-              <div className="infolabel">Policy No:</div>
+          <div>
+            <div style={{ display: "flex", padding: "20px" }}>
+              <div className="infolabels-container">
+                <div className="infolabel">Name:</div>
+                <div className="infolabel">Phone No:</div>
+                <div className="infolabel">Policy No:</div>
 
-              <div className="infolabel">Job ID:</div>
-              <div className="infolabel">Chassis No:</div>
-              <div className="infolabel">Vehicle No:</div>
-              <div className="infolabel">Registration Date:</div>
-              <div className="infolabel">Model</div>
-              {/* <div className="infolabel">Nature of Complaint :</div> */}
-            </div>
-            <div className="values-container">
-              <div className="value">{searchData?.customer_name}</div>
-              <div className="value">{searchData?.customer_mobile_no}</div>
-              <div className="value">{searchData?.policy_no}</div>
+                <div className="infolabel">Job ID:</div>
+                <div className="infolabel">Chassis No:</div>
+                <div className="infolabel">Vehicle No:</div>
+                <div className="infolabel">Registration Date:</div>
+                <div className="infolabel">Model</div>
+                {/* <div className="infolabel">Nature of Complaint :</div> */}
+              </div>
+              <div className="values-container">
+                <div className="value">{searchData?.customer_name}</div>
+                <div className="value">{searchData?.customer_mobile_no}</div>
+                <div className="value">{searchData?.policy_no}</div>
 
-              <div className="value">{searchData?.jobid}</div>
-              <div className="value">{searchData?.frame_no}</div>
-              <div className="value">{searchData?.registration_no}</div>
-              <div className="value">January 1, 2022</div>
-              <div className="value">{searchData?.model}</div>
+                <div className="value">{searchData?.jobid}</div>
+                <div className="value">{searchData?.frame_no}</div>
+                <div className="value">{searchData?.registration_no}</div>
+                <div className="value">January 1, 2022</div>
+                <div className="value">{searchData?.model}</div>
+              </div>
             </div>
           </div>
           <button className="escalatebutton" onClick={openModal} type="submit">
@@ -226,8 +230,16 @@ const MakerEscalatePage = () => {
             </div>
           ) : (
             <div className="card-container">
-                   {escalationList.map((item) => (
-                <div className="homecard" key={item.id}>
+              {escalationList.map((item) => (
+                <div
+                  className="homecard"
+                  key={item.id}
+                  onClick={() => {
+                    navigate("/chat", {
+                      state: { escdata: item },
+                    });
+                  }}
+                >
                   <div
                     style={{
                       // backgroundColor: "red",

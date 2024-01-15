@@ -16,6 +16,42 @@
   overflow-y: auto;
 
 }
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.status-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  /* border-radius: 4px; */
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.dropdown-content {
+  display: block;
+  position: absolute;
+  top: -120px; /* Adjust the top position as needed */
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  padding: 10px;
+}
+
+.dropdown-content div {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-content div:hover {
+  background-color: #ddd;
+}
+
+/* Add any other styles you need for your specific design */
 
  .messagecontainer{
   position: absolute;

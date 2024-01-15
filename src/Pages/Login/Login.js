@@ -127,35 +127,36 @@ const Login = () => {
   }, [location.state, checkLoginStatus]);
   return (
     <div className="logincontainer">
-      <div
-        style={{
-          backgroundColor: "red",
-          display: "flex",
-          justifyContent: "center",
-          padding: "10px",
-        }}
-      >
-        <h2 style={{ fontSize: "12px", color: "white" }}>
-          TVS Escalation Login
-        </h2>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div style={{ padding: "20px" }}>
-          <div className="inputContainer">
-            <input
-              className="input"
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              placeholder="Username"
-            />
-            {errors.username && (
-              <span className="error">{errors.username}</span>
-            )}
-          </div>
-          <div className="inputContainer">
+      <div className="logincontainer1">
+        <div
+          style={{
+            backgroundColor: "red",
+            width: "100%",
+            padding: "10px",
+          }}
+        >
+          <h2 style={{ fontSize: "12px", color: "white" }}>
+            TVS Escalation Login
+          </h2>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div style={{ padding: "20px" }}>
+          <div style={{padding:'10px',position:'relative'}}>
+              <input
+                className="input"
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="Username"
+              />
+              {errors.username && (
+                <span className="error">{errors.username}</span>
+              )}
+            </div>
+            <div style={{padding:'10px',position:'relative'}}>
+
             <input
               className="input"
               type="password"
@@ -168,14 +169,15 @@ const Login = () => {
             {errors.password && (
               <span className="error">{errors.password}</span>
             )}
+            </div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <button className="button" type="submit">
+                Login
+              </button>
+            </div>
           </div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <button className="button" type="submit">
-              Login
-            </button>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };

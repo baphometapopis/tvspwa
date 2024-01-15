@@ -88,7 +88,7 @@ const Home = () => {
     if (localData !== null || localData !== undefined) {
       const decryptdata = decryptData(localData);
       setLoginData(decryptdata);
-      setUserName(`${decryptdata?.first_name}${decryptdata?.last_name} `);
+      setUserName(`${decryptdata?.first_name}  ${decryptdata?.last_name} `);
 
       const data = await escalationListApi(decryptdata?.id);
       if (data?.status) {
@@ -136,7 +136,7 @@ const Home = () => {
 
   return (
     <div className="Homecnt">
-      <Header />
+      <Header username={userName} />
       <div
         className="user-info"
         style={{ backgroundColor: "red", width: "100%", padding: 20 }}

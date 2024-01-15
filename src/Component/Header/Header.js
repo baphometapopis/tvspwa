@@ -4,7 +4,8 @@ import Logo from "../../Assets/Logo/TVS-Motor-Company.png";
 import avatarImage from "../../Assets/Image-60.png"; // Import your avatar image
 import { useNavigate } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ username }) => {
+  console.log(username, "ihkugjfhgxdghgjukhilj");
   const navigate = useNavigate();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -36,7 +37,7 @@ const Header = () => {
               className="menu-item"
               onClick={() => console.log("Username clicked")}
             >
-              Username
+              {username}
             </div>
             <div className="menu-item" onClick={handleLogout}>
               Logout

@@ -17,7 +17,8 @@ const ChatComponent = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [loginData, setloginData] = useState("");
-
+  const [statusOptions] = useState(["wip", "resolved", "closed"]); // Add your status options here
+  const [selectedStatus, setSelectedStatus] = useState("wip");
   const findOppositeUserId = (targetUserId, data) => {
     if (data.esclated_by === targetUserId) {
       return data.esclated_to;
@@ -26,6 +27,7 @@ const ChatComponent = () => {
     }
     return null; // Return null if the ID is not found in the data
   };
+  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
 
   const callChatAPi = useCallback(async () => {
     const localData = localStorage.getItem("LoggedInUser");
@@ -55,11 +57,11 @@ const ChatComponent = () => {
           esclation_id: escalationData?.id,
         };
         console.log(data);
-  
+
         // Assuming checkerAction is an asynchronous function
         const senddata = await checkerAction(data);
         console.log(senddata);
-  
+
         // After sending the message, fetch the updated chat data
         callChatAPi();
       }
@@ -67,7 +69,6 @@ const ChatComponent = () => {
       console.log("you are maker", loginData.admin_role);
     }
   };
-  
 
   function formatDate(inputDate) {
     const options = {
@@ -81,9 +82,14 @@ const ChatComponent = () => {
     const formattedDate = new Date(inputDate).toLocaleString("en-US", options);
     return formattedDate;
   }
+
+  const handleStatusChange = async (newStatus) => {
+    setSelectedStatus(newStatus);
+    setIsStatusDropdownOpen(false);
+  };
   useEffect(() => {
     callChatAPi();
-  }, [callChatAPi, escalationData]);
+  }, [callChatAPi, escalationData, isStatusDropdownOpen]);
   return (
     <div className="Homecnt">
       <Header />
@@ -97,7 +103,116 @@ const ChatComponent = () => {
         // //   backgroundPosition: "",
         // }}
       >
-        {messages && (
+        {messages && true ? (
+          <div className="chat-container2">
+            {messages
+              .slice()
+              .reverse()
+              .map((message, index) => (
+                <div
+                  key={index}
+                  className={` ${
+                    message.type !== "from" ? " box3 sb14" : " box4 sb13"
+                  }`}
+                >
+                  {console.log(
+                    message.type,
+                    message.esclated_to_comment,
+                    message.esclated_by_comment
+                  )}
+                  <p style={{ paddingBottom: "15px" }}>
+                    {message?.esclated_by_comment ||
+                      message?.esclated_to_comment}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      position: "absolute",
+                      right: "10px",
+                      bottom: "2px",
+                    }}
+                  >
+                    {formatDate(message?.created_at)}
+                  </p>
+                </div>
+              ))}
+          </div>
+        ) : (
+          <div className="chat-container2">
+            {messages
+              .slice()
+              .reverse()
+              .map((message, index) => (
+                <div
+                  key={index}
+                  className={` ${
+                    message.type !== "to" ? " box3 sb14" : " box4 sb13"
+                  }`}
+                >
+                  {console.log(
+                    message.type,
+                    message.esclated_to_comment,
+                    message.esclated_by_comment
+                  )}
+                  <p style={{ paddingBottom: "15px" }}>
+                    {message.type !== "from"
+                      ? message?.esclated_by_comment
+                      : message?.esclated_to_comment}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      position: "absolute",
+                      right: "10px",
+                      bottom: "2px",
+                    }}
+                  >
+                    {formatDate(message?.created_at)}
+                  </p>
+                </div>
+              ))}
+          </div>
+        )}
+        <div className="messagecontainer">
+          <input
+            type="text"
+            className="message-input"
+            placeholder="Type your message..."
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            style={{ flex: 1 }}
+          />{" "}
+          <div className="custom-dropdown">
+            <button
+              className="status-button"
+              onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
+            >
+              Change Status
+            </button>
+            {isStatusDropdownOpen && (
+              <div className="dropdown-content">
+                {statusOptions.map((status) => (
+                  <div key={status} onClick={() => handleStatusChange(status)}>
+                    {status}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <button className="send-button" onClick={handleSendMessage}>
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ChatComponent;
+
+
+
+/*  {messages && (
           <div className="chat-container2">
             {messages
               .slice()
@@ -129,45 +244,4 @@ const ChatComponent = () => {
                 </div>
               ))}
           </div>
-        )}
-        <div className="messagecontainer">
-          <input
-            type="text"
-            className="message-input"
-            placeholder="Type your message..."
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            style={{ flex: 1 }}
-          />
-          <button className="send-button" onClick={handleSendMessage}>
-            Send
-          </button>
-        </div>
-      </div>
-      {/* <div className="chat-container">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`box3  ${message.type === "to" ? "sb14" : "sb13"}`}
-          >
-            {message.text}
-          </div>
-        ))}
-      </div>
-      <div className="input-container">
-        <input
-          type="text"
-          className="message-input"
-          placeholder="Type your message..."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-        />
-        <button className="send-button" onClick={handleSendMessage}>
-          Send
-        </button>
-      </div> */}
-    </div>
-  );
-};
-
-export default ChatComponent;
+        )}*/
