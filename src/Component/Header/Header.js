@@ -24,7 +24,7 @@ const Header = ({ username }) => {
 
   return (
     <div className="header">
-      <div className="avatar-container">
+      <div className="avatar-container" >
         <img
           src={Logo}
           alt="Logo"

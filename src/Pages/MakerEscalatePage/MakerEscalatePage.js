@@ -208,34 +208,34 @@ const MakerEscalatePage = () => {
       <div className="info-container">
         <div className="info-box">
           <div>
-            <div style={{ display: "flex", padding: "20px" }}>
+            <div className="profileContainer">
               <div className="infolabels-container">
-                <div className="infolabel">Name:</div>
-                <div className="infolabel">Phone No:</div>
-                <div className="infolabel">Policy No:</div>
+                <div className="infolabel">Name</div>
+                <div className="infolabel">Phone No</div>
+                <div className="infolabel">Policy No</div>
 
-                <div className="infolabel">Job ID:</div>
-                <div className="infolabel">Chassis No:</div>
-                <div className="infolabel">Vehicle No:</div>
-                <div className="infolabel">Registration Date:</div>
+                <div className="infolabel">Job ID</div>
+                <div className="infolabel">Chassis No</div>
+                <div className="infolabel">Vehicle No</div>
+                <div className="infolabel">Registration Date</div>
                 <div className="infolabel">Model</div>
                 {/* <div className="infolabel">Nature of Complaint :</div> */}
               </div>
               <div className="values-container">
-                <div className="value">{searchData?.customer_name}</div>
-                <div className="value">{searchData?.customer_mobile_no}</div>
-                <div className="value">{searchData?.policy_no}</div>
+                <div className="value">:{searchData?.customer_name||null}</div>
+                <div className="value">:{searchData?.customer_mobile_no||null}</div>
+                <div className="value">:{searchData?.policy_no||null}</div>
 
-                <div className="value">{searchData?.jobid}</div>
-                <div className="value">{searchData?.frame_no}</div>
-                <div className="value">{searchData?.registration_no}</div>
-                <div className="value">January 1, 2022</div>
-                <div className="value">{searchData?.model}</div>
+                <div className="value">:{searchData?.jobid||null}</div>
+                <div className="value">:{searchData?.frame_no||null}</div>
+                <div className="value">:{searchData?.registration_no||null}</div>
+                <div className="value">:January 1, 2022</div>
+                <div className="value">:{searchData?.model||null}</div>
               </div>
             </div>
           </div>
 
-          {loginData?.admin_role === "escalation_maker" && (
+          {loginData?.esclation_type === "maker" && (
             <button
               className="escalatebutton"
               onClick={openModal}
@@ -280,7 +280,25 @@ const MakerEscalatePage = () => {
                       }}
                     >
                       <p className="jobid">#{item.id}</p>
-                      <p className="statustag">{item.esclation_status}</p>
+                      <p
+                        className="statustag"
+                        style={{
+                          backgroundColor:
+                            item.esclation_status === "Pending"
+                              ? "#e54a50" // Pending color
+                              : item.esclation_status === "WIP"
+                              ? "#eec75b" // WIP color
+                              : item.esclation_status === "Resolved"
+                              ? "#5d9db9" // Resolved color
+                              : item.esclation_status === "Accepted"
+                              ? "#6fb293" // Accepted color
+                              : item.esclation_status === "Reopen"
+                              ? "#d7Oe17" // Reopen color
+                              : "white", // Default color for other cases
+                        }}
+                      >
+                        {item.esclation_status}
+                      </p>
                     </div>
                     <div
                       style={{
@@ -296,11 +314,16 @@ const MakerEscalatePage = () => {
 
                         <p>{findCategoryname(item.esclated_by_category_id)}</p>
                       </div>
-                      <img src={chat} alt="Logo"  onClick={() => {
-                      navigate("/chat", {
-                        state: { escdata: item },
-                      });
-                    }} className="chatICon" />
+                      <img
+                        src={chat}
+                        alt="Logo"
+                        onClick={() => {
+                          navigate("/chat", {
+                            state: { escdata: item },
+                          });
+                        }}
+                        className="chatICon"
+                      />
                     </div>
                     {/* <p>{item.esclated_by_comment}</p> */}
                     <div

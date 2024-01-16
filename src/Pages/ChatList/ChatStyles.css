@@ -114,15 +114,15 @@
   margin-right: auto;
   margin-top: 20px;  
   margin-left: 20px;
-    width: 300px;
+    max-width: 300px;
+    min-width: 150px;
 
   border-radius: 6px;
   background: #FFFFFF;
   color: #4F4F4F;
   word-wrap: break-word;
-  padding: 20px;
+  padding-top: 10px;
   font-size: 12px;
-  text-align: center;
   /* font-weight: 900; */
   font-family: arial;
   position: relative;}
@@ -179,6 +179,7 @@
 @media (max-width: 768px) {
   .chat-container {
   width: 100%;
+  background-color: #E8F2F2;
   }
   .messagecontainer{
     width: 100%

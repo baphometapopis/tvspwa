@@ -10,6 +10,9 @@
   flex-direction: column;
 }
 
+.infolabel{
+  font-size: 14px;
+}
 @media (max-width: 768px) {
   .dashboardcnt {
     font-size: 14px;
@@ -43,12 +46,13 @@
 .header {
   background-color: #007bff;
   color: #fff;
-  padding: 10px;
+  /* padding: 10px; */
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100vw;
 }
+
 
 .avatar {
   width: 40px;
@@ -74,6 +78,10 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
+}
+.profileContainer{
+  display: flex;padding: 20px;gap:10px
+
 }
 
 /* MakerEscalatePage.css */
@@ -112,23 +120,88 @@
   background-color: #e0e0e0;
 }
 
+.infolabels-container{
+  display: flex;
+  flex-direction: column;
+  gap:15px
+}
+
+.values-container{
+  display: flex;
+  flex-direction: column;
+  gap:12px
+}
+
+.infolabel {
+  color: #696969;
+ font-size: 14px;
+}
+
+.Value{
+  color:#051B34;
+  font-size: 14px;
+
+}
+
 
 @media (max-width: 768px) {
   .info-container {
     flex-direction: column;
     margin-top: 1px;
   }
-}
 
+ 
+    
+  
+  .infolabels-container{
+    gap:12px
+  }
+
+  .values-container{
+    gap:10px
+  }
+
+  .profileContainer{
+    display: flex;padding: 20px;gap:10px
+
+  }
 .infolabel {
-  margin-bottom: 5px;
-  margin-top: 5px;
+  color: #696969;
+ font-size: 12px;
+ font-weight:500
+}
+.value {
+  color: #051B34;
+ font-size: 13px;
+ font-weight:500
+}
+.profileContainer{
+  display: flex;padding: 10px;gap:10px
+
+}
+.escalatebutton {
+  display: flex;
+  background-color: #cb2020;
+  color: #fff;
+  padding: 5px 40px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  justify-content: center;
+  align-self: center;
+  width: 50%;
 }
 
-.value {
-  margin-bottom: 5px;
-  margin-top: 5px;
 }
+
+
+@media (max-width: 375px) {
+ 
+  .profileContainer{
+    display: flex;padding: 10px;gap:10px
+
+  }}
+
 
 .escalatebutton {
   display: flex;
@@ -217,7 +290,7 @@
   .info-box {
     width: 100%;
     margin: 10px;
-    min-height: 300px
+    min-height: 310px
   }
 }
 

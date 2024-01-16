@@ -121,16 +121,27 @@ const ChatComponent = () => {
                     message.esclated_to_comment,
                     message.esclated_by_comment
                   )}
-                  <p style={{ paddingBottom: "15px" }}>
+                  <p
+                    style={{
+                      paddingBottom: "15px",
+                      zIndex: 1,
+                      position: "sticky",
+                      paddingLeft: "10px",
+                      color:'#4F4F4F'
+                    }}
+                  >
                     {message?.esclated_by_comment ||
                       message?.esclated_to_comment}
                   </p>
                   <p
                     style={{
-                      fontSize: "12px",
+                      fontSize: "8px",
                       position: "absolute",
                       right: "10px",
                       bottom: "2px",
+                      // fontWeight: "600",
+                      color:'#4F4F4F'
+
                     }}
                   >
                     {formatDate(message?.created_at)}

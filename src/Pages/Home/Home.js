@@ -57,7 +57,8 @@ const Home = () => {
 
     const searchdata = await searchEscalationData(
       prop === "ViewDocument" ? searchOptions[0]?.value : selectedOption?.value,
-      prop === "ViewDocument" ? id : searchQuery
+      prop === "ViewDocument" ? id : searchQuery,
+      loginData?.id
     );
     if (searchdata?.status) {
       navigate("MakerEscalatePage", { state: { searchData: searchdata } });
@@ -162,7 +163,7 @@ const Home = () => {
         {userName}
       </div>
       <div className="homecnt2">
-        {loginData?.admin_role === "escalation_maker" && (
+        {loginData?.esclation_type === "maker" && (
           <div className="homesearch-container">
             <Select
               className="search-dropdown"
@@ -191,7 +192,8 @@ const Home = () => {
           </div>
         )}
 
-        <div className="scrollable-container "  style={{marginTop:'10px'}}>
+        <div className="scrollable-container " style={{ marginTop: "10px" }}>
+          <div className="filterHeader"> xgchvjbknlml</div>
           {escalationList.length === 0 ? (
             <div className="no-cases-message">
               {loginData?.admin_role === "escalation_maker"
@@ -218,7 +220,25 @@ const Home = () => {
                         alt="Logo"
                         className="viewData"
                       />
-                      <p className="statustag">{item.esclation_status}</p>
+                      <p
+                        className="statustag"
+                        style={{
+                          backgroundColor:
+                            item.esclation_status === "Pending"
+                              ? "#e54a50" // Pending color
+                              : item.esclation_status === "WIP"
+                              ? "#eec75b" // WIP color
+                              : item.esclation_status === "Resolved"
+                              ? "#5d9db9" // Resolved color
+                              : item.esclation_status === "Accepted"
+                              ? "#6fb293" // Accepted color
+                              : item.esclation_status === "Reopen"
+                              ? "#d7Oe17" // Reopen color
+                              : "white", // Default color for other cases
+                        }}
+                      >
+                        {item.esclation_status}
+                      </p>
                     </div>
                   </div>
                   <div
