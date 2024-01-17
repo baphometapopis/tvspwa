@@ -6,20 +6,22 @@ import Header from "../../Component/Header/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getEscalationCataegoryList } from "../../Api/getEscalationcategorylist";
 import { decryptData } from "../../Utils/cryptoUtils";
-import { escalationListApi } from "../../Api/escalationListAPi";
 import { toast } from "react-toastify";
 import supportAgent from "../../Assets/Icons/supportAgent.png";
 import chat from "../../Assets/Icons/chat.png";
 
 import Select from "react-select";
 import { Tooltip } from "@mui/material";
-import { makerAction } from "../../Api/MakerAction";
+import { raiseEscalation } from "../../Api/raiseEscalation";
+import { IndividualesclationListAPI } from "../../Api/IndividualesclationList";
 
 const MakerEscalatePage = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
   const [searchData] = useState(location?.state?.searchData?.data);
+  const [searchHistory, setsearchHistory] = useState([]);
+
   const [jobID] = useState(location?.state?.searchData?.data?.jobid);
   const [selectedOption, setSelectedOption] = useState(null);
   const [issueDescription, setIssueDescription] = useState("");
@@ -30,19 +32,9 @@ const MakerEscalatePage = () => {
   const [loginData, setLoginData] = useState();
   const [error, setError] = useState(null);
   const [selectedTab, setSelectedTab] = useState("cases"); // Default tab is "cases"
-  // const [activeStep, setActiveStep] = useState(0);
-  const steps = [
-    " Choose Category",
-    "Provide Details",
-    "Confirm and Submit",
-    "Confirm and Submit",
-    "Confirm and Submit",
-    "onfirm and Submit",
-    "Confirm and Submit",
-    "Confirm and Submit",
-    "Confirm and Submit",
-  ];
+
   const handleSend = async () => {
+    console.log(searchData);
     // Check if an option is selected
     if (!issueDescription.trim() && !selectedOption) {
       setError("Please describe the issue and select an option");
@@ -69,7 +61,7 @@ const MakerEscalatePage = () => {
     };
     console.log(data);
 
-    const escalateissue = await makerAction(data);
+    const escalateissue = await raiseEscalation(data);
     if (escalateissue.status) {
       toast.success("Escalation raised Successfully", {
         position: "bottom-right",
@@ -119,6 +111,7 @@ const MakerEscalatePage = () => {
     setSelectedTab(tabName);
   };
   const fetchEscalationList = async () => {
+    // const getesclationList = console.log(getesclationList);
     const categorydata = await getEscalationCataegoryList();
     if (categorydata.status) {
       setcategoryList(categorydata.data);
@@ -128,9 +121,10 @@ const MakerEscalatePage = () => {
       const decryptdata = decryptData(localData);
       setLoginData(decryptdata);
 
-      const data = await escalationListApi(decryptdata?.id);
+      const data = await await IndividualesclationListAPI(jobID);
       if (data?.status) {
-        setEscalationList(data.data);
+        setEscalationList(data?.escalation_log);
+        setsearchHistory(data?.job_status_history);
       } else {
         toast.error(data?.message, {
           position: "bottom-right",
@@ -222,15 +216,21 @@ const MakerEscalatePage = () => {
                 {/* <div className="infolabel">Nature of Complaint :</div> */}
               </div>
               <div className="values-container">
-                <div className="value">:{searchData?.customer_name||null}</div>
-                <div className="value">:{searchData?.customer_mobile_no||null}</div>
-                <div className="value">:{searchData?.policy_no||null}</div>
+                <div className="value">
+                  :{searchData?.customer_name || null}
+                </div>
+                <div className="value">
+                  :{searchData?.customer_mobile_no || null}
+                </div>
+                <div className="value">:{searchData?.policy_no || null}</div>
 
-                <div className="value">:{searchData?.jobid||null}</div>
-                <div className="value">:{searchData?.frame_no||null}</div>
-                <div className="value">:{searchData?.registration_no||null}</div>
+                <div className="value">:{searchData?.jobid || null}</div>
+                <div className="value">:{searchData?.frame_no || null}</div>
+                <div className="value">
+                  :{searchData?.registration_no || null}
+                </div>
                 <div className="value">:January 1, 2022</div>
-                <div className="value">:{searchData?.model||null}</div>
+                <div className="value">:{searchData?.model || null}</div>
               </div>
             </div>
           </div>
@@ -368,13 +368,39 @@ const MakerEscalatePage = () => {
               <div className="vertical-bar"></div>
               <div className="content-container">
                 <div className="card-container">
-                  {steps.map((step, index) => (
+                  {searchHistory.map((step, index) => (
                     <div key={index} className="card">
                       <div className={"step"}>
                         <div className="step-number">
-                          {steps.length - index}
+                          {searchHistory.length - index}
                         </div>
-                        <div className="step-content">{step}</div>
+                        <div className="step-content">
+                          <p style={{ marginBottom: "10px" }}>
+                            {step.status_labal}
+                          </p>
+                          <p>Comment: {step.comment}</p>
+
+                          <p
+                            style={{
+                              position: "absolute",
+                              right: 10,
+                              color: "#696969",
+                              fontSize: "14px",
+                            }}
+                          >
+                            {new Date(step.create_date).toLocaleString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                              }
+                            )}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   ))}

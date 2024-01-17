@@ -7,18 +7,26 @@ import { useNavigate } from "react-router-dom";
 import { escalationListApi } from "../../Api/escalationListAPi";
 import { decryptData } from "../../Utils/cryptoUtils";
 import Tooltip from "@mui/material/Tooltip";
-import chat from "../../Assets/Icons/chat.png";
+// import chat from "../../Assets/Icons/chat.png";
 import viewData from "../../Assets/Icons/viewData.png";
+import chassisImg from "../../Assets/Icons/chassis.png";
+import EngineImg from "../../Assets/Icons/engine.png";
+import phoneImg from "../../Assets/Icons/phone.png";
 
+import filter from "../../Assets/Icons/filter.png";
+import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import { getEscalationCataegoryList } from "../../Api/getEscalationcategorylist";
 import supportAgent from "../../Assets/Icons/supportAgent.png";
 import { searchEscalationData } from "../../Api/searchEscalationData";
+import ReactDatePicker from "react-datepicker";
 const Home = () => {
   const navigate = useNavigate();
   const [escalationList, setEscalationList] = useState([]);
-  const [categoryList, setcategoryList] = useState([]);
-
+  const [filterType, setFilterType] = useState("Pending");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loginData, setLoginData] = useState();
   const [userName, setUserName] = useState("");
   const [error, setError] = useState(null);
@@ -30,16 +38,34 @@ const Home = () => {
     { value: "frame_no", label: "Chassis Number" },
     { value: "registration_no", label: "Vehicle Number" },
   ];
+  const handleFilterChange = (event) => {
+    setFilterType(event.target.value);
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleFilter = () => {
+    // Handle the selected date range, you can perform actions here
+    console.log("Selected Date Range:", startDate, endDate);
+    const filterdata = {
+      start_date: startDate,
+      end_date: endDate,
+      status_id: filterType,
+    };
+    fetchEscalationList("filter", filterdata);
+
+    // Close the modal
+    handleModalClose();
+  };
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const findCategoryname = (category_id) => {
-    const answers = categoryList
-      .filter((item) => item.id === category_id)
-      .map((item) => item.answer);
-
-    return answers;
-  };
 
   const handleSearch = async (prop, id) => {
     console.log(prop, id);
@@ -85,32 +111,45 @@ const Home = () => {
     console.log(`Searching for ${selectedOption?.value}: ${searchQuery}`);
   };
 
-  const fetchEscalationList = async () => {
-    const categorydata = await getEscalationCataegoryList();
-    console.log(categorydata);
-    if (categorydata.status) {
-      setcategoryList(categorydata.data);
-    }
-    const localData = localStorage.getItem("LoggedInUser");
-    if (localData !== null || localData !== undefined) {
-      const decryptdata = decryptData(localData);
-      setLoginData(decryptdata);
-      setUserName(`${decryptdata?.first_name}  ${decryptdata?.last_name} `);
+  const fetchEscalationList = useCallback(
+    async (param, filterdata) => {
+      console.log(filterdata, "this is the filtereddata");
+      const categorydata = await getEscalationCataegoryList();
+      console.log(categorydata);
 
-      const data = await escalationListApi(decryptdata?.id);
-      if (data?.status) {
-        setEscalationList(data.data);
-      } else {
-        toast.error(data?.message, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-        });
+      if (categorydata?.status) {
       }
-    }
-  };
+
+      const localData = localStorage.getItem("LoggedInUser");
+
+      if (localData !== null || localData !== undefined) {
+        const decryptdata = decryptData(localData);
+        setLoginData(decryptdata);
+        setUserName(`${decryptdata?.first_name}  ${decryptdata?.last_name} `);
+
+        const finalfilterData = {
+          ...filterdata,
+          user_id: decryptdata?.id,
+        };
+
+        const data = await escalationListApi(finalfilterData);
+
+        if (data?.status) {
+          setEscalationList(data.data);
+        } else {
+          toast.error(data?.message, {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+          });
+        }
+      }
+    },
+    [setLoginData, setUserName, setEscalationList]
+  );
+
   const handleInputFocus = () => {
     // Clear the error state when the input is focused
     setError(null);
@@ -139,7 +178,7 @@ const Home = () => {
   useEffect(() => {
     checkLoginStatus();
     fetchEscalationList();
-  }, [checkLoginStatus]);
+  }, [checkLoginStatus, fetchEscalationList]);
 
   return (
     <div className="Homecnt">
@@ -187,13 +226,73 @@ const Home = () => {
               />
             </Tooltip>
             <button className="search-button" onClick={handleSearch}>
-              Search {selectedOption?.label || ""}
+              Search {selectedOption?.label || "All"}
             </button>
           </div>
         )}
+        {isModalOpen && (
+          <div className="modal">
+            <div className="filtermodal-content">
+              <h2>Filter Options</h2>
+              <label className="date-picker-label">Filter Status</label>
 
+              <select
+                className="selectfilter"
+                value={filterType}
+                onChange={handleFilterChange}
+              >
+                {/* <option value="">All</option> */}
+
+                <option value="Pending">Pending</option>
+                <option value="WIP">WIP</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Reopen">Reopen</option>
+              </select>
+
+              <div className="date-logo-container">
+                {/* <img src={dateLogo} alt="Date Logo" className="date-logo" /> */}
+              </div>
+
+              <div className="date-picker-container">
+                <div>
+                  <label className="date-picker-label">Start Date</label>
+                  <ReactDatePicker
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    placeholderText="Start Date"
+                  />
+                </div>
+                <div>
+                  <label className="date-picker-label">End Date</label>
+                  <ReactDatePicker
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    placeholderText="End Date"
+                  />
+                </div>
+              </div>
+
+              <div className="button-container">
+                <button className="apply-button" onClick={handleFilter}>
+                  Apply
+                </button>
+                {/* <button onClick={handleModalClose}>Cancel</button> */}
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="filterHeader">
+          <img
+            src={filter}
+            onClick={handleModalOpen}
+            alt="Logo"
+            className="viewData"
+          />
+
+          {/* <button onClick={handleModalOpen}>Open Modal</button> */}
+        </div>
         <div className="scrollable-container " style={{ marginTop: "10px" }}>
-          <div className="filterHeader"> xgchvjbknlml</div>
           {escalationList.length === 0 ? (
             <div className="no-cases-message">
               {loginData?.admin_role === "escalation_maker"
@@ -203,14 +302,26 @@ const Home = () => {
           ) : (
             <div className="card-container">
               {escalationList.map((item) => (
-                <div className="homecard" key={item.id}>
+                <div
+                  className="homecard"
+                  key={item.id}
+                  style={{
+                    backgroundColor:
+                      item?.esclation_sub_type !== "icpl_sales"
+                        ? "#ffe6e6"
+                        : "",
+                  }}
+                >
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
                     }}
                   >
-                    <p className="jobid">#{item.id}</p>
+                    <div>
+                      <p className="jobid">#{item.job_id}</p>
+                      <p className="escalatedby">by {item.from_name}</p>
+                    </div>
                     <div style={{ flexDirection: "row", display: "flex" }}>
                       <img
                         src={viewData}
@@ -251,11 +362,15 @@ const Home = () => {
                     }}
                   >
                     <div>
-                      <p className="escalatedby">by {item.from_name}</p>
-
-                      <p>{findCategoryname(item.esclated_by_category_id)}</p>
+                      <img src={chassisImg} alt="Logo" className="chassisImg" />
+                      <img src={phoneImg} alt="Logo" className="phoneImg" />
+                      <img src={EngineImg} alt="Logo" className="engineImg" />
+                      <p>{item.customer_name}</p>
+                      <p className="card_mobile_no">{item.mobile_number}</p>
+                      <p className="card_engine_no">{item.engine_number}</p>
+                      <p className="card_chassis_no">{item.chassis_number}</p>
                     </div>
-                    <img
+                    {/* <img
                       src={chat}
                       alt="Logo"
                       onClick={() => {
@@ -264,7 +379,7 @@ const Home = () => {
                         });
                       }}
                       className="chatICon"
-                    />
+                    /> */}
                   </div>
                   {/* <p>{item.esclated_by_comment}</p> */}
                   <div
@@ -280,6 +395,7 @@ const Home = () => {
                         display: "flex",
                         alignItems: "center",
                         gap: "5px",
+                        marginTop: "25px",
                       }}
                     >
                       <img
@@ -289,6 +405,9 @@ const Home = () => {
                       />
                       <p className="tobabel"> {item.to_name}</p>
                     </span>
+
+                    <p className="cardic_name">IC Name:{item.rsa_ic_name}</p>
+
                     <p className="creationdate">
                       {new Date(item.created_at).toLocaleString("en-US", {
                         month: "short",

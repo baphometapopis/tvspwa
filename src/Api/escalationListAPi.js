@@ -1,9 +1,13 @@
 import makeApiRequest from "./apiCaller";
 
-export const escalationListApi = async (user_id) => {
+export const escalationListApi = async (paramdata) => {
+  console.log(paramdata, "escalationListApi");
   try {
     const body = new URLSearchParams();
-    body.append("user_id", user_id);
+    body.append("user_id", paramdata?.user_id);
+    body.append("end_date", paramdata?.end_date || "");
+    body.append("start_date", paramdata?.start_date || "");
+    body.append("status_id", paramdata?.status_id || "Pending");
 
     const result = await makeApiRequest("esclationList", "POST", body);
     const data = JSON.parse(result);

@@ -6,15 +6,35 @@
   background-color: #CECECE ;
   overflow: hidden;
 }
+.chatstatusHeader{
+  background-color: #ffffff;
+  position: absolute;
+  border: 1px solid #9B9B9B;
+  width: 50%;
+  padding: 10px;
+  /* height: 15%; */
+  z-index: 2;
+}
 .chat-container2{
   display: flex;
   height: 100%;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-end;
-  padding-bottom: 71px;
+  flex-direction: column-reverse;
+  /* flex-wrap: nowrap; */
+  /* justify-content: flex-end; */
+  padding-bottom: 65px;
+  padding-top: 70px;
   overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
 
+.chat-container2::-webkit-scrollbar {
+  width: 6px; /* Width of the scrollbar */
+}
+
+.chat-container2::-webkit-scrollbar-thumb {
+  background-color: #CECECE; /* Color of the scrollbar thumb */
+  border-radius: 3px; /* Rounded corners of the thumb */
 }
 .custom-dropdown {
   position: relative;
@@ -54,6 +74,7 @@
 /* Add any other styles you need for your specific design */
 
  .messagecontainer{
+  z-index: 3;
   position: absolute;
   bottom: 1px;
   background-color: #092E58;
@@ -95,6 +116,8 @@
     border: none;
     /* border-radius: 5px; */
     cursor: pointer;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
   
   
@@ -110,12 +133,33 @@
   font-family: arial;
   position: relative;
 } */
+
+.chatUsername{
+  padding-bottom: 5px;
+  z-index: 1;
+  position: sticky;
+  padding-left: 10px;
+  font-size: 9px;
+color: #CB2020;
+}
+.chatStatus{
+  padding-bottom: 5px;
+  z-index: 1;
+  position: absolute;
+  padding-left: 10px;
+  font-size: 9px;
+top: 10px;
+right: 10px;
+font-weight: 600;
+
+}
 .box3{
+  max-width: 80%;
   margin-right: auto;
   margin-top: 20px;  
   margin-left: 20px;
-    max-width: 300px;
     min-width: 150px;
+    
 
   border-radius: 6px;
   background: #FFFFFF;
@@ -126,23 +170,28 @@
   /* font-weight: 900; */
   font-family: arial;
   position: relative;}
+
+
+
   .box4{
+    max-width: 80%;
+
     margin-left: auto;
     margin-right: 20px;
     margin-top: 20px;  
   word-wrap: break-word;
 
-    width: 300px;
-    min-height: fit-content;
+  min-width: 150px;    min-height: fit-content;
     font-size: 12px;
 
     border-radius: 6px;
     background: #FFEBEB;
   color: #4F4F4F;
-    padding: 13px;
-    text-align: center;
-    /* font-weight: 900; */
-    font-family: arial;
+  word-wrap: break-word;
+
+  padding-top: 10px;
+    font-size: 12px;
+  font-family: arial;
     position: relative;}
 
 
@@ -183,6 +232,10 @@
   }
   .messagecontainer{
     width: 100%
+  }
+  .chatstatusHeader{
+    position: absolute;
+    width: 100%;
   }
  
 }
