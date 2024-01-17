@@ -1,6 +1,6 @@
 // Dashboard.js
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./MakerEscalatePage.css"; // Import the CSS file
 import Header from "../../Component/Header/Header";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -110,32 +110,43 @@ const MakerEscalatePage = () => {
   const handleTabClick = (tabName) => {
     setSelectedTab(tabName);
   };
-  const fetchEscalationList = async () => {
-    // const getesclationList = console.log(getesclationList);
-    const categorydata = await getEscalationCataegoryList();
-    if (categorydata.status) {
-      setcategoryList(categorydata.data);
-    }
-    const localData = localStorage.getItem("LoggedInUser");
-    if (localData !== null || localData !== undefined) {
-      const decryptdata = decryptData(localData);
-      setLoginData(decryptdata);
-
-      const data = await await IndividualesclationListAPI(jobID);
-      if (data?.status) {
-        setEscalationList(data?.escalation_log);
-        setsearchHistory(data?.job_status_history);
-      } else {
-        toast.error(data?.message, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-        });
+  const fetchEscalationList = useCallback(async () => {
+    try {
+      const categorydata = await getEscalationCataegoryList();
+      if (categorydata.status) {
+        setcategoryList(categorydata.data);
       }
+
+      const localData = localStorage.getItem("LoggedInUser");
+      if (localData !== null || localData !== undefined) {
+        const decryptdata = decryptData(localData);
+        setLoginData(decryptdata);
+
+        const data = await IndividualesclationListAPI(jobID);
+        if (data?.status) {
+          setEscalationList(data?.escalation_log);
+          setsearchHistory(data?.job_status_history);
+        } else {
+          toast.error(data?.message, {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error in fetchEscalationList:", error);
     }
-  };
+  }, [
+    setcategoryList,
+    setLoginData,
+    setEscalationList,
+    setsearchHistory,
+    jobID,
+  ]);
+
   const handleInputFocus = () => {
     // Clear the error state when the input is focused
     setError(null);
@@ -143,7 +154,7 @@ const MakerEscalatePage = () => {
 
   useEffect(() => {
     fetchEscalationList();
-  }, []);
+  }, [fetchEscalationList]);
   useEffect(() => {}, [isModalOpen, selectedOption, issueDescription]);
   return (
     <div className="dashboardcnt">
