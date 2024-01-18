@@ -227,7 +227,9 @@ const MakerEscalatePage = () => {
                 {/* <div className="infolabel">Nature of Complaint :</div> */}
               </div>
               <div className="values-container">
-                <p className="labelvalue">:{searchData?.customer_name || null}</p>
+                <p className="labelvalue">
+                  :{searchData?.customer_name || null}
+                </p>
                 <p className="labelvalue">
                   :{searchData?.customer_mobile_no || null}
                 </p>
@@ -235,7 +237,9 @@ const MakerEscalatePage = () => {
 
                 <p className="labelvalue">:{searchData?.jobid || null}</p>
                 <p className="labelvalue">:{searchData?.frame_no || null}</p>
-                <p className="labelvalue">:{searchData?.registration_no || null}</p>
+                <p className="labelvalue">
+                  :{searchData?.registration_no || null}
+                </p>
                 <p className="labelvalue">:January 1, 2022</p>
                 <p className="labelvalue">:{searchData?.model || null}</p>
               </div>
@@ -375,7 +379,7 @@ const MakerEscalatePage = () => {
               <div className="vertical-bar"></div>
               <div className="content-container">
                 <div className="card-container">
-                  {searchHistory.map((step, index) => (
+                  {searchHistory.slice().reverse().map((step, index) => (
                     <div key={index} className="card">
                       <div className={"step"}>
                         <div className="step-number">
