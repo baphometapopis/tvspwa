@@ -3,13 +3,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./ChatStyles.css"; // Import the CSS file
 import Header from "../../Component/Header/Header";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { decryptData } from "../../Utils/cryptoUtils";
 import { fetchChats } from "../../Api/fetchChats";
 import { checkerAction } from "../../Api/checkAction";
 import { makerAction } from "../../Api/MakerAction";
 // import bgImage from "../../Assets/bgImage/chatBackground.jpeg";
 import Tooltip from "@mui/material/Tooltip";
+import back from "../../Assets/Icons/back.png";
 
 const ChatComponent = () => {
   const location = useLocation();
@@ -33,7 +34,7 @@ const ChatComponent = () => {
     return null; // Return null if the ID is not found in the data
   };
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
-
+  const navigate = useNavigate();
   const callChatAPi = useCallback(async () => {
     const localData = localStorage.getItem("LoggedInUser");
     const decryptdata = decryptData(localData);
@@ -120,6 +121,10 @@ const ChatComponent = () => {
     setSelectedStatus(newStatus);
     setIsStatusDropdownOpen(false);
   };
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
   useEffect(() => {
     callChatAPi();
   }, [callChatAPi, escalationData, isStatusDropdownOpen]);
@@ -127,6 +132,13 @@ const ChatComponent = () => {
     <div className="Homecnt">
       <Header />
       <div className="chat-container">
+        <button className="back-button" onClick={handleGoBack}>
+          <img
+            src={back}
+            alt="Logo"
+            style={{ height: "30px", width: "30px" }}
+          />
+        </button>
         {true && (
           <div className="chatstatusHeader">
             <p style={{ fontSize: "14px" }}>

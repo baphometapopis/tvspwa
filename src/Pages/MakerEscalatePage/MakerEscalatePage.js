@@ -9,6 +9,7 @@ import { decryptData } from "../../Utils/cryptoUtils";
 import { toast } from "react-toastify";
 import supportAgent from "../../Assets/Icons/supportAgent.png";
 import chat from "../../Assets/Icons/chat.png";
+import back from "../../Assets/Icons/back.png";
 
 import Select from "react-select";
 import { Tooltip } from "@mui/material";
@@ -146,6 +147,9 @@ const MakerEscalatePage = () => {
     setsearchHistory,
     jobID,
   ]);
+  const handleGoBack = () => {
+    navigate(-1);
+  };
 
   const handleInputFocus = () => {
     // Clear the error state when the input is focused
@@ -209,7 +213,9 @@ const MakerEscalatePage = () => {
           </div>
         </div>
       )}
-
+      <button className="back-button" onClick={handleGoBack}>
+        <img src={back} alt="Logo" style={{ height: "30px", width: "30px" }} />
+      </button>
       <div className="info-container">
         <div className="info-box">
           <div>
@@ -379,42 +385,45 @@ const MakerEscalatePage = () => {
               <div className="vertical-bar"></div>
               <div className="content-container">
                 <div className="card-container">
-                  {searchHistory.slice().reverse().map((step, index) => (
-                    <div key={index} className="card">
-                      <div className={"step"}>
-                        <div className="step-number">
-                          {searchHistory.length - index}
-                        </div>
-                        <div className="step-content">
-                          <p style={{ marginBottom: "10px" }}>
-                            {step.status_labal}
-                          </p>
-                          <p>Comment: {step.comment}</p>
+                  {searchHistory
+                    .slice()
+                    .reverse()
+                    .map((step, index) => (
+                      <div key={index} className="card">
+                        <div className={"step"}>
+                          <div className="step-number">
+                            {searchHistory.length - index}
+                          </div>
+                          <div className="step-content">
+                            <p style={{ marginBottom: "10px" }}>
+                              {step.status_labal}
+                            </p>
+                            <p>Comment: {step.comment}</p>
 
-                          <p
-                            style={{
-                              position: "absolute",
-                              right: 10,
-                              color: "#696969",
-                              fontSize: "14px",
-                            }}
-                          >
-                            {new Date(step.create_date).toLocaleString(
-                              "en-US",
-                              {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                                hour: "numeric",
-                                minute: "numeric",
-                                hour12: true,
-                              }
-                            )}
-                          </p>
+                            <p
+                              style={{
+                                position: "absolute",
+                                right: 10,
+                                color: "#696969",
+                                fontSize: "14px",
+                              }}
+                            >
+                              {new Date(step.create_date).toLocaleString(
+                                "en-US",
+                                {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                  hour: "numeric",
+                                  minute: "numeric",
+                                  hour12: true,
+                                }
+                              )}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
                 <div className="horizontal-line"></div>
                 {/* Additional card content goes here */}

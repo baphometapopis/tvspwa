@@ -30,6 +30,7 @@ const Home = () => {
   const [loginData, setLoginData] = useState();
   const [userName, setUserName] = useState("");
   const [error, setError] = useState(null);
+  const [timeDifference, setTimeDifference] = useState("");
 
   const searchOptions = [
     { value: "jobid", label: "Job Id" },
@@ -154,6 +155,25 @@ const Home = () => {
     // Clear the error state when the input is focused
     setError(null);
   };
+  const calculateTimeDifference = (createDate) => {
+    const now = new Date();
+    const createDateObj = new Date(createDate);
+    const timeDifference = now - createDateObj;
+
+    // Calculate the difference in hours, minutes, and seconds
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const minutes = Math.floor(
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    // Build the formatted string
+    const formattedTime = `${String(hours).padStart(2, "0")}:${String(
+      minutes
+    ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+    return formattedTime;
+  };
 
   const checkLoginStatus = useCallback(async () => {
     const data = await localStorage.getItem("LoggedInUser");
@@ -179,6 +199,24 @@ const Home = () => {
     checkLoginStatus();
     fetchEscalationList();
   }, [checkLoginStatus, fetchEscalationList]);
+  useEffect(() => {
+    // Update time difference for each item initially
+    const initialTimeDifferences = escalationList.map((item) =>
+      calculateTimeDifference(item.created_at)
+    );
+    setTimeDifference(initialTimeDifferences);
+
+    // Set up interval to update time difference every second
+    const intervalId = setInterval(() => {
+      const updatedTimeDifferences = escalationList.map((item) =>
+        calculateTimeDifference(item.created_at)
+      );
+      setTimeDifference(updatedTimeDifferences);
+    }, 1000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [escalationList]);
 
   return (
     <div className="Homecnt">
@@ -308,7 +346,7 @@ const Home = () => {
             </div>
           ) : (
             <div className="card-container">
-              {escalationList.map((item) => (
+              {escalationList.map((item, index) => (
                 <div
                   className="homecard"
                   key={item.id}
@@ -356,6 +394,16 @@ const Home = () => {
                         }}
                       >
                         {item.esclation_status}
+                      </p>
+                      <p
+                        style={{
+                          position: "absolute",
+                          fontSize: "12px",
+                          top: "32px",
+                          right:'15px'
+                        }}
+                      >
+                        {timeDifference[index]}
                       </p>
                     </div>
                   </div>

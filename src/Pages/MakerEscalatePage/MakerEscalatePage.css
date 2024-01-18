@@ -1,4 +1,32 @@
-/* MakerEscalatePage.css */
+.back-button {
+  position: fixed;
+  background-color: #cb2020;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+padding-top: 12px ;
+padding-bottom: 12px ;
+
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 1s ease-in-out;
+  left: 1%;
+  top: 50%;
+  transform: translateX(-50%);
+}
+
+.back-button:hover {
+  background-color: #2980b9;
+  animation: moveAnimation 2s infinite alternate;
+}
+
+@keyframes moveAnimation {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(-60%); /* Adjust the distance the button moves */
+  }
+}
 
 .dashboardcnt {
   display: flex;
