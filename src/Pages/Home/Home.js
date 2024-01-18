@@ -209,7 +209,7 @@ const Home = () => {
     // Set up interval to update time difference every second
     const intervalId = setInterval(() => {
       const updatedTimeDifferences = escalationList.map((item) =>
-        calculateTimeDifference(item.created_at)
+        calculateTimeDifference(item.job_create_date)
       );
       setTimeDifference(updatedTimeDifferences);
     }, 1000);

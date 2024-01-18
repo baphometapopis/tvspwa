@@ -228,7 +228,7 @@ const MakerEscalatePage = () => {
                 <div className="infolabel">Job ID</div>
                 <div className="infolabel">Chassis No</div>
                 <div className="infolabel">Vehicle No</div>
-                <div className="infolabel">Registration Date</div>
+                <div className="infolabel">Dealer Code:</div>
                 <div className="infolabel">Model</div>
                 {/* <div className="infolabel">Nature of Complaint :</div> */}
               </div>
@@ -246,7 +246,7 @@ const MakerEscalatePage = () => {
                 <p className="labelvalue">
                   :{searchData?.registration_no || null}
                 </p>
-                <p className="labelvalue">:January 1, 2022</p>
+                <p className="labelvalue">:{searchData?.sap_ad_code || null}</p>
                 <p className="labelvalue">:{searchData?.model || null}</p>
               </div>
             </div>
