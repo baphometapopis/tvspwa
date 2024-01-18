@@ -221,7 +221,14 @@ const Home = () => {
                 className="search-input"
                 placeholder={`Enter ${selectedOption?.label || "search term"}`}
                 value={searchQuery}
-                onChange={(e) => {   setSearchQuery(e.target.value)}}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value?.replace(
+                    /[^a-zA-Z0-9]/g,
+                    ""
+                  );
+                  setSearchQuery(sanitizedValue);
+                  // setSearchQuery(e.target.value);
+                }}
                 onFocus={handleInputFocus} // Clear error when input is focused
               />
             </Tooltip>
@@ -409,7 +416,7 @@ const Home = () => {
                     <p className="cardic_name">IC Name:{item.rsa_ic_name}</p>
 
                     <p className="creationdate">
-                      JOB crt:{' '}
+                      JOB crt:{" "}
                       {new Date(item.created_at).toLocaleString("en-US", {
                         month: "short",
                         day: "numeric",
