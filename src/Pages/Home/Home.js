@@ -395,7 +395,7 @@ const Home = () => {
                         display: "flex",
                         alignItems: "center",
                         gap: "5px",
-                        marginTop: "25px",
+                        marginTop: "38px",
                       }}
                     >
                       <img

@@ -227,21 +227,17 @@ const MakerEscalatePage = () => {
                 {/* <div className="infolabel">Nature of Complaint :</div> */}
               </div>
               <div className="values-container">
-                <div className="value">
-                  :{searchData?.customer_name || null}
-                </div>
-                <div className="value">
+                <p className="labelvalue">:{searchData?.customer_name || null}</p>
+                <p className="labelvalue">
                   :{searchData?.customer_mobile_no || null}
-                </div>
-                <div className="value">:{searchData?.policy_no || null}</div>
+                </p>
+                <p className="labelvalue">:{searchData?.policy_no || null}</p>
 
-                <div className="value">:{searchData?.jobid || null}</div>
-                <div className="value">:{searchData?.frame_no || null}</div>
-                <div className="value">
-                  :{searchData?.registration_no || null}
-                </div>
-                <div className="value">:January 1, 2022</div>
-                <div className="value">:{searchData?.model || null}</div>
+                <p className="labelvalue">:{searchData?.jobid || null}</p>
+                <p className="labelvalue">:{searchData?.frame_no || null}</p>
+                <p className="labelvalue">:{searchData?.registration_no || null}</p>
+                <p className="labelvalue">:January 1, 2022</p>
+                <p className="labelvalue">:{searchData?.model || null}</p>
               </div>
             </div>
           </div>
