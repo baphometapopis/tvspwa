@@ -1,12 +1,12 @@
 import { API_BASE_URL } from "./ApiEndpoint";
-import { getHeaders } from "./apiService";
+// import { getHeaders } from "./apiService";
 
 const makeApiRequest = (endpoint, method = "GET", body = null) => {
   const url = `${API_BASE_URL}/${endpoint}`;
 
   const requestOptions = {
     method: method.toUpperCase(),
-    headers: getHeaders(),
+    // headers: getHeaders(),
     body,
     redirect: "follow",
   };
