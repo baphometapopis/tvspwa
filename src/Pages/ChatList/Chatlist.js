@@ -16,6 +16,7 @@ const ChatComponent = () => {
   const location = useLocation();
 
   const [escalationData] = useState(location?.state?.escdata);
+  const [formattedTime, setFormattedTime] = useState("");
 
   const [messages, setMessages] = useState([]);
   const [escalationStatusData, setescalationstatusData] = useState();
@@ -116,6 +117,34 @@ const ChatComponent = () => {
     const formattedDate = new Date(inputDate).toLocaleString("en-US", options);
     return formattedDate;
   }
+  const calculateTimeDifference = (createDate) => {
+    const now = new Date();
+    const createDateObj = new Date(createDate);
+    const timeDifference = now - createDateObj;
+
+    // Calculate the difference in days, hours, minutes, and seconds
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const minutes = Math.floor(
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    // Build the formatted string
+    let formattedTime = "";
+
+    if (days > 0) {
+      formattedTime += `${days} day${days > 1 ? "s" : ""}`;
+    } else {
+      formattedTime += `${String(hours).padStart(2, "0")}:${String(
+        minutes
+      ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    return formattedTime;
+  };
 
   const handleStatusChange = async (newStatus) => {
     setSelectedStatus(newStatus);
@@ -128,6 +157,17 @@ const ChatComponent = () => {
   useEffect(() => {
     callChatAPi();
   }, [callChatAPi, escalationData, isStatusDropdownOpen]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setFormattedTime(
+        calculateTimeDifference(escalationStatusData?.created_at)
+      );
+    }, 1000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [escalationStatusData?.created_at]);
+
   return (
     <div className="Homecnt">
       <Header />
@@ -151,7 +191,8 @@ const ChatComponent = () => {
             </p>
 
             <p style={{ fontSize: "14px" }}>
-              Creation Date :{formatDate(escalationStatusData?.created_at)}
+              Creation Date :{formatDate(escalationStatusData?.created_at)}-(
+              {formattedTime})
             </p>
           </div>
         )}

@@ -159,21 +159,26 @@ const Home = () => {
     const now = new Date();
     const createDateObj = new Date(createDate);
     const timeDifference = now - createDateObj;
-
-    // Calculate the difference in hours, minutes, and seconds
-    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-    const minutes = Math.floor(
-      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-    );
+  
+    // Calculate the difference in days, hours, minutes, and seconds
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
+  
     // Build the formatted string
-    const formattedTime = `${String(hours).padStart(2, "0")}:${String(
-      minutes
-    ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
+    let formattedTime = '';
+    
+    if (days > 0) {
+      formattedTime += `${days} day${days > 1 ? 's' : ''}`;
+    } else {
+      formattedTime += `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    }
+  
     return formattedTime;
   };
+  
+
 
   const handleInputChange = (e) => {
     const sanitizedValue = e.target.value?.replace(/[^a-zA-Z0-9]/g, "");
