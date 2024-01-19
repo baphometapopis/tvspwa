@@ -12,6 +12,7 @@ import viewData from "../../Assets/Icons/viewData.png";
 import chassisImg from "../../Assets/Icons/chassis.png";
 import EngineImg from "../../Assets/Icons/engine.png";
 import phoneImg from "../../Assets/Icons/phone.png";
+import close from "../../Assets/Icons/close1.png";
 
 import filter from "../../Assets/Icons/filter.png";
 import "react-datepicker/dist/react-datepicker.css";
@@ -30,6 +31,8 @@ const Home = () => {
   const [loginData, setLoginData] = useState();
   const [userName, setUserName] = useState("");
   const [error, setError] = useState(null);
+  const [validationerror, setvalidationerror] = useState(null);
+
   const [timeDifference, setTimeDifference] = useState("");
 
   const searchOptions = [
@@ -118,9 +121,6 @@ const Home = () => {
       const categorydata = await getEscalationCataegoryList();
       console.log(categorydata);
 
-      if (categorydata?.status) {
-      }
-
       const localData = localStorage.getItem("LoggedInUser");
 
       if (localData !== null || localData !== undefined) {
@@ -175,6 +175,29 @@ const Home = () => {
     return formattedTime;
   };
 
+  const handleInputChange = (e) => {
+    const inputValue = e?.target?.value;
+    setSearchQuery(inputValue);
+
+    if (selectedOption?.value === "customer_mobile_no") {
+      const regex = /^[6-9]\d{9}$/; // Indian phone number regex
+      setvalidationerror(
+        inputValue && !regex.test(inputValue)
+          ? "Invalid Indian phone number"
+          : ""
+      );
+    } else if (selectedOption?.value === "jobid") {
+      const regex = /^\d+$/; // Only accept numbers
+      setvalidationerror(
+        inputValue && !regex.test(inputValue)
+          ? "Invalid job ID (Only numbers are allowed)"
+          : ""
+      );
+    } else {
+      setvalidationerror("");
+    }
+  };
+
   const checkLoginStatus = useCallback(async () => {
     const data = await localStorage.getItem("LoggedInUser");
     if (data === null || data === undefined) {
@@ -183,6 +206,7 @@ const Home = () => {
       navigate("/Home");
     }
   }, [navigate]);
+
   useEffect(() => {
     const handleBack = () => {
       // Replace the current entry in the navigation stack with the home screen
@@ -248,12 +272,15 @@ const Home = () => {
               isClearable
               placeholder="Select an option"
               value={selectedOption}
-              onChange={(selected) => {
-                setSelectedOption(selected);
-                handleInputFocus();
-              }}
+              onChange={handleInputChange}
             />
             <Tooltip title={error || ""} arrow open={Boolean(error)}>
+            <p style={{position:'absolute'}}>
+
+            {validationerror}
+
+
+            </p>
               <input
                 type="text"
                 className="search-input"
@@ -277,47 +304,74 @@ const Home = () => {
         )}
         {isModalOpen && (
           <div className="modal">
-            <div className="filtermodal-content">
-              <h2>Filter Options</h2>
-              <label className="date-picker-label">Filter Status</label>
+            <div className="modal-content" style={{ paddingBottom: "5px" }}>
+              <div className="modal-header" style={{ position: "relative" }}>
+                <p className="modal-header-label">Filter Options</p>
+                <img
+                  src={close}
+                  onClick={() => setIsModalOpen(false)}
+                  style={{
+                    height: "20px",
+                    width: "20px",
+                    position: "absolute",
+                    top: "12px",
+                    right: "10px",
+                  }}
+                  alt="close"
+                />
+              </div>{" "}
+              <div style={{ padding: "10px" }}>
+                <div className="modal-dropdown">
+                  <label className="date-picker-label">Filter Status</label>
+                  <select
+                    className="selectfilter"
+                    value={filterType}
+                    onChange={handleFilterChange}
+                  >
+                    {/* <option value="">All</option> */}
 
-              <select
-                className="selectfilter"
-                value={filterType}
-                onChange={handleFilterChange}
-              >
-                {/* <option value="">All</option> */}
-
-                <option value="Pending">Pending</option>
-                <option value="WIP">WIP</option>
-                <option value="Resolved">Resolved</option>
-                <option value="Accepted">Accepted</option>
-                <option value="Reopen">Reopen</option>
-              </select>
-
-              <div className="date-logo-container">
-                {/* <img src={dateLogo} alt="Date Logo" className="date-logo" /> */}
-              </div>
-
-              <div className="date-picker-container">
-                <div>
-                  <label className="date-picker-label">Start Date</label>
-                  <ReactDatePicker
-                    selected={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    placeholderText="Start Date"
-                  />
+                    <option value="Pending">Pending</option>
+                    <option value="WIP">WIP</option>
+                    <option value="Resolved">Resolved</option>
+                    <option value="Accepted">Accepted</option>
+                    <option value="Reopen">Reopen</option>
+                  </select>
                 </div>
-                <div>
-                  <label className="date-picker-label">End Date</label>
-                  <ReactDatePicker
-                    selected={endDate}
-                    onChange={(date) => setEndDate(date)}
-                    placeholderText="End Date"
-                  />
+                <div className="date-logo-container">
+                  {/* <img src={dateLogo} alt="Date Logo" className="date-logo" /> */}
+                </div>
+                <div
+                  className="date-picker-container"
+                  style={{ position: "relative" }}
+                >
+                  <div style={{ display: "flex" }}>
+                    <label style={{ position: "absolute", top: "-21px" }}>
+                      Start Date
+                    </label>
+                    <ReactDatePicker
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      placeholderText="Start Date"
+                    />
+                    <label
+                      style={{
+                        position: "absolute",
+                        top: "-21px",
+                        right: "127px",
+                      }}
+                    >
+                      End Date
+                    </label>
+
+                    <ReactDatePicker
+                      selected={endDate}
+                      onChange={(date) => setEndDate(date)}
+                      placeholderText="End Date"
+                    />
+                  </div>
+                  <div></div>
                 </div>
               </div>
-
               <div className="button-container">
                 <button className="apply-button" onClick={handleFilter}>
                   Apply
@@ -400,7 +454,7 @@ const Home = () => {
                           position: "absolute",
                           fontSize: "12px",
                           top: "32px",
-                          right:'15px'
+                          right: "15px",
                         }}
                       >
                         {timeDifference[index]}

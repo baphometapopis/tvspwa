@@ -41,7 +41,7 @@
 
   .react-datepicker__input-container input {
     padding: 8px;
-    width: 100%;
+    width: 90%;
     box-sizing: border-box;
   }
 }
@@ -54,7 +54,8 @@
 
 .selectfilter {
   padding: 8px;
-  font-size: 1em;
+  font-size: 12px;
+  border-radius: 8px;
   margin-bottom: 10px;
 }
 
@@ -85,7 +86,8 @@
 }
 .button-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+
 }
 
 

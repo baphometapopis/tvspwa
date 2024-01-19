@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./Header.css"; // Import the CSS file
 import Logo from "../../Assets/Logo/TVS-Motor-Company.png";
 import avatarImage from "../../Assets/Image-60.png"; // Import your avatar image
 import { useNavigate } from "react-router-dom";
+import { decryptData } from "../../Utils/cryptoUtils";
 
-const Header = ({ username }) => {
-  console.log(username, "ihkugjfhgxdghgjukhilj");
+const Header = () => {
+  const [username, setusername] = useState();
   const navigate = useNavigate();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -22,15 +23,27 @@ const Header = ({ username }) => {
     // You may want to redirect the user to the login page or perform other logout actions here
   };
 
+  const checkLoginStatus = useCallback(async () => {
+    const data = await localStorage.getItem("LoggedInUser");
+    if (data) {
+      const decryptdata = decryptData(data);
+    console.log(decryptdata);
+
+
+      setusername(decryptdata?.first_name);
+    }
+    if (data === null || data === undefined) {
+      navigate("/");
+    } 
+  }, [navigate]);
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, [checkLoginStatus]);
   return (
     <div className="header">
-      <div className="avatar-container" >
-        <img
-          src={Logo}
-          alt="Logo"
-          className="Logo"
-          onClick={handleAvatarClick}
-        />
+      <div className="avatar-container">
+        <img src={Logo} alt="Logo" className="Logo" />
         {isDropdownOpen && (
           <div className="dropdown-menu">
             <div
@@ -51,6 +64,7 @@ const Header = ({ username }) => {
           alt="Avatar"
           className="avatar"
           onClick={handleAvatarClick}
+          style={{ backgroundColor: "red" }}
         />
       </div>
     </div>
