@@ -56,10 +56,23 @@ const Home = () => {
 
   const handleFilter = () => {
     // Handle the selected date range, you can perform actions here
-    console.log("Selected Date Range:", startDate, endDate);
+    const originalstartDate = new Date(startDate);
+    const originalendDate = new Date(endDate);
+
+    const formattedendDate = `${originalendDate.getFullYear()}-${String(
+      originalendDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(originalendDate.getDate()).padStart(2, "0")}`;
+    const formattedstartDate = `${originalstartDate.getFullYear()}-${String(
+      originalstartDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(originalstartDate.getDate()).padStart(
+      2,
+      "0"
+    )}`;
+    console.log("Selected Date Range:", formattedstartDate, endDate);
+
     const filterdata = {
-      start_date: startDate,
-      end_date: endDate,
+      start_date: formattedstartDate,
+      end_date: formattedendDate,
       status_id: filterType,
     };
     fetchEscalationList("filter", filterdata);
@@ -159,26 +172,30 @@ const Home = () => {
     const now = new Date();
     const createDateObj = new Date(createDate);
     const timeDifference = now - createDateObj;
-  
+
     // Calculate the difference in days, hours, minutes, and seconds
     const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    const hours = Math.floor(
+      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const minutes = Math.floor(
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+    );
     const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-  
+
     // Build the formatted string
-    let formattedTime = '';
-    
+    let formattedTime = "";
+
     if (days > 0) {
-      formattedTime += `${days} day${days > 1 ? 's' : ''}`;
+      formattedTime += `${days} day${days > 1 ? "s" : ""}`;
     } else {
-      formattedTime += `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+      formattedTime += `${String(hours).padStart(2, "0")}:${String(
+        minutes
+      ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     }
-  
+
     return formattedTime;
   };
-  
-
 
   const handleInputChange = (e) => {
     const sanitizedValue = e.target.value?.replace(/[^a-zA-Z0-9]/g, "");
