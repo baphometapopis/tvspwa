@@ -520,7 +520,7 @@ const Home = () => {
 
                     <p className="creationdate">
                       JOB crt:{" "}
-                      {new Date(item.created_at).toLocaleString("en-US", {
+                      {new Date(item.job_create_date).toLocaleString("en-US", {
                         month: "short",
                         day: "numeric",
                         year: "numeric",
