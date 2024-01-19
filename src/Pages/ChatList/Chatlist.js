@@ -42,7 +42,7 @@ const ChatComponent = () => {
     setStatusOption(
       decryptdata?.esclation_type === "maker"
         ? ["Accepted", "Reopen", "reescalate"]
-        : ["wip", "resolved", "closed"]
+        : ["wip", "resolved"]
     );
 
     const oppositeUserId = findOppositeUserId(decryptdata?.id, escalationData);
