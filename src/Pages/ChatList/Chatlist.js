@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./ChatStyles.css"; // Import the CSS file
 import Header from "../../Component/Header/Header";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { decryptData } from "../../Utils/cryptoUtils";
 import { fetchChats } from "../../Api/fetchChats";
 import { checkerAction } from "../../Api/checkAction";
