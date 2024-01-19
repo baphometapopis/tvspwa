@@ -93,6 +93,10 @@ const Home = () => {
         setError("Please select an option and enter a valid search term.");
         return;
       }
+
+      if (validationerror) {
+        return;
+      }
     }
 
     // Reset error state if no error
@@ -139,7 +143,9 @@ const Home = () => {
       if (localData !== null || localData !== undefined) {
         const decryptdata = decryptData(localData);
         setLoginData(decryptdata);
-        setUserName(`${decryptdata?.first_name ?? ''} ${decryptdata?.last_name ?? ''}`);
+        setUserName(
+          `${decryptdata?.first_name ?? ""} ${decryptdata?.last_name ?? ""}`
+        );
 
         const finalfilterData = {
           ...filterdata,
@@ -208,7 +214,7 @@ const Home = () => {
       console.log("mobile phone number error ");
       setvalidationerror(
         sanitizedValue && !regex.test(sanitizedValue)
-          ? "Invalid Indian phone number"
+          ? "Invalid  phone number"
           : ""
       );
     } else if (selectedOption?.value === "jobid") {
