@@ -176,25 +176,30 @@ const Home = () => {
   };
 
   const handleInputChange = (e) => {
-    const inputValue = e?.target?.value;
-    setSearchQuery(inputValue);
+    const sanitizedValue = e.target.value?.replace(/[^a-zA-Z0-9]/g, "");
+    setSearchQuery(sanitizedValue);
+    // setSearchQuery(e.target.value);
+    console.log(selectedOption);
 
     if (selectedOption?.value === "customer_mobile_no") {
       const regex = /^[6-9]\d{9}$/; // Indian phone number regex
+      console.log("mobile phone number error ");
       setvalidationerror(
-        inputValue && !regex.test(inputValue)
+        sanitizedValue && !regex.test(sanitizedValue)
           ? "Invalid Indian phone number"
           : ""
       );
     } else if (selectedOption?.value === "jobid") {
       const regex = /^\d+$/; // Only accept numbers
       setvalidationerror(
-        inputValue && !regex.test(inputValue)
+        sanitizedValue && !regex.test(sanitizedValue)
           ? "Invalid job ID (Only numbers are allowed)"
           : ""
       );
+      console.log("job ID phone number error ");
     } else {
       setvalidationerror("");
+      console.log("no error error ");
     }
   };
 
@@ -272,34 +277,30 @@ const Home = () => {
               isClearable
               placeholder="Select an option"
               value={selectedOption}
-              onChange={handleInputChange}
+              onChange={(e) => setSelectedOption(e)}
             />
-            <Tooltip title={error || ""} arrow open={Boolean(error)}>
-            <p style={{position:'absolute'}}>
 
-            {validationerror}
-
-
-            </p>
+            <Tooltip title={validationerror || ""} arrow open={validationerror}>
               <input
                 type="text"
                 className="search-input"
                 placeholder={`Enter ${selectedOption?.label || "search term"}`}
                 value={searchQuery}
-                onChange={(e) => {
-                  const sanitizedValue = e.target.value?.replace(
-                    /[^a-zA-Z0-9]/g,
-                    ""
-                  );
-                  setSearchQuery(sanitizedValue);
-                  // setSearchQuery(e.target.value);
-                }}
+                onChange={handleInputChange}
                 onFocus={handleInputFocus} // Clear error when input is focused
               />
             </Tooltip>
-            <button className="search-button" onClick={handleSearch}>
-              Search {selectedOption?.label || "All"}
-            </button>
+
+            <Tooltip
+              title={error || ""}
+              arrow
+              open={Boolean(error)}
+              style={{ position: "relative" }}
+            >
+              <button className="search-button" onClick={handleSearch}>
+                Search {selectedOption?.label || "All"}
+              </button>
+            </Tooltip>
           </div>
         )}
         {isModalOpen && (
