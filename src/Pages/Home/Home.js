@@ -139,7 +139,7 @@ const Home = () => {
       if (localData !== null || localData !== undefined) {
         const decryptdata = decryptData(localData);
         setLoginData(decryptdata);
-        setUserName(`${decryptdata?.first_name}  ${decryptdata?.last_name} `);
+        setUserName(`${decryptdata?.first_name ?? ''} ${decryptdata?.last_name ?? ''}`);
 
         const finalfilterData = {
           ...filterdata,
