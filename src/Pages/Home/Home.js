@@ -361,7 +361,7 @@ const Home = () => {
 
                     <option value="Pending">Pending</option>
                     <option value="WIP">WIP</option>
-                    <option value="resolved">Resolved</option>
+                    <option value="Resolved">Resolved</option>
                     <option value="Accepted">Accepted</option>
                     <option value="Reopen">Reopen</option>
                   </select>
