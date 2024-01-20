@@ -56,18 +56,35 @@ const Home = () => {
 
   const handleFilter = () => {
     // Handle the selected date range, you can perform actions here
-    const originalstartDate = new Date(startDate);
-    const originalendDate = new Date(endDate);
+    // Assuming startDate and endDate are variables representing the start and end dates
+
+    let originalstartDate, originalendDate;
+
+    if (startDate) {
+      originalstartDate = new Date(startDate);
+    } else {
+      originalstartDate = new Date(); // Use today's date if startDate is null
+    }
+
+    if (endDate) {
+      originalendDate = new Date(endDate);
+    } else {
+      originalendDate = new Date(); // Use today's date if endDate is null
+    }
 
     const formattedendDate = `${originalendDate.getFullYear()}-${String(
       originalendDate.getMonth() + 1
     ).padStart(2, "0")}-${String(originalendDate.getDate()).padStart(2, "0")}`;
+
     const formattedstartDate = `${originalstartDate.getFullYear()}-${String(
       originalstartDate.getMonth() + 1
     ).padStart(2, "0")}-${String(originalstartDate.getDate()).padStart(
       2,
       "0"
     )}`;
+
+    // Now, formattedstartDate and formattedendDate contain the formatted dates.
+
     console.log("Selected Date Range:", formattedstartDate, endDate);
 
     const filterdata = {
