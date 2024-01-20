@@ -17,7 +17,6 @@ import close from "../../Assets/Icons/close1.png";
 import filter from "../../Assets/Icons/filter.png";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
-import { getEscalationCataegoryList } from "../../Api/getEscalationcategorylist";
 import supportAgent from "../../Assets/Icons/supportAgent.png";
 import { searchEscalationData } from "../../Api/searchEscalationData";
 import ReactDatePicker from "react-datepicker";
@@ -85,8 +84,6 @@ const Home = () => {
 
     // Now, formattedstartDate and formattedendDate contain the formatted dates.
 
-    console.log("Selected Date Range:", formattedstartDate, endDate);
-
     const filterdata = {
       start_date: formattedstartDate,
       end_date: formattedendDate,
@@ -102,7 +99,6 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = async (prop, id) => {
-    console.log(prop, id);
     // Check if the selected option is null or the searchQuery is empty
     if (prop !== "ViewDocument") {
       if (!selectedOption || !searchQuery.trim()) {
@@ -145,16 +141,10 @@ const Home = () => {
       setSelectedOption(null);
       setSearchQuery("");
     }
-
-    console.log(`Searching for ${selectedOption?.value}: ${searchQuery}`);
   };
 
   const fetchEscalationList = useCallback(
     async (param, filterdata) => {
-      console.log(filterdata, "this is the filtereddata");
-      const categorydata = await getEscalationCataegoryList();
-      console.log(categorydata);
-
       const localData = localStorage.getItem("LoggedInUser");
 
       if (localData !== null || localData !== undefined) {
@@ -224,7 +214,6 @@ const Home = () => {
     const sanitizedValue = e.target.value?.replace(/[^a-zA-Z0-9]/g, "");
     setSearchQuery(sanitizedValue);
     // setSearchQuery(e.target.value);
-    console.log(selectedOption);
 
     if (selectedOption?.value === "customer_mobile_no") {
       const regex = /^[6-9]\d{9}$/; // Indian phone number regex
@@ -241,7 +230,6 @@ const Home = () => {
           ? "Invalid job ID (Only numbers are allowed)"
           : ""
       );
-      console.log("job ID phone number error ");
     } else {
       setvalidationerror("");
       console.log("no error error ");

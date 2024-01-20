@@ -1,15 +1,14 @@
-// src/index.js
-
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import App from "./App";
 import * as serviceWorkerRegistration from "./PWAServicefile/service-worker-registration.js";
 
-ReactDOM.render(
+// Use createRoot instead of ReactDOM.render
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
 
 serviceWorkerRegistration.register();

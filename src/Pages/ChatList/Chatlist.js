@@ -5,10 +5,11 @@ import "./ChatStyles.css"; // Import the CSS file
 import Header from "../../Component/Header/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { decryptData } from "../../Utils/cryptoUtils";
+import { toast } from "react-toastify";
+
 import { fetchChats } from "../../Api/fetchChats";
 import { checkerAction } from "../../Api/checkAction";
 import { makerAction } from "../../Api/MakerAction";
-// import bgImage from "../../Assets/bgImage/chatBackground.jpeg";
 import Tooltip from "@mui/material/Tooltip";
 import back from "../../Assets/Icons/back.png";
 
@@ -26,14 +27,7 @@ const ChatComponent = () => {
   const [statusOptions, setStatusOption] = useState(["wip", "resolved"]); // Add your status options here
 
   const [selectedStatus, setSelectedStatus] = useState("");
-  const findOppositeUserId = (targetUserId, data) => {
-    if (data?.esclated_by === targetUserId) {
-      return data?.esclated_to;
-    } else if (data.esclated_to === targetUserId) {
-      return data.esclated_by;
-    }
-    return null; // Return null if the ID is not found in the data
-  };
+
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const callChatAPi = useCallback(async () => {
@@ -46,15 +40,11 @@ const ChatComponent = () => {
         : ["wip", "resolved"]
     );
 
-    const oppositeUserId = findOppositeUserId(decryptdata?.id, escalationData);
-    console.log(typeof escalationData);
-    console.log("Opposite User ID:", oppositeUserId);
     const data = {
       user_id: decryptdata?.id,
       esclation_id: escalationData?.id,
     };
     const chatdata = await fetchChats(data);
-    console.log(chatdata);
     const sortedData = [...chatdata?.data].sort((a, b) => {
       const dateA = new Date(a.created_at);
       const dateB = new Date(b.created_at);
@@ -65,13 +55,10 @@ const ChatComponent = () => {
   }, [escalationData]);
   const handleSendMessage = async () => {
     if (!newMessage || !selectedStatus) {
-      console.error("Please enter a message and select a status.");
-      // You can also show an error message to the user if needed.
       setError("please type message and select status");
       return;
     }
 
-    console.log(selectedStatus);
     const data = {
       esclated_to_comment: newMessage,
       esclation_status: selectedStatus,
@@ -80,22 +67,29 @@ const ChatComponent = () => {
     };
     if (loginData.admin_role === "escalation_checker") {
       if (newMessage !== "") {
-        console.log("you are checker");
-
-        console.log(data);
-
-        // Assuming checkerAction is an asynchronous function
         const senddata = await checkerAction(data);
-        console.log(senddata);
-
-        // After sending the message, fetch the updated chat data
+        if (!senddata?.status) {
+          toast.error(senddata?.message, {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+          });
+        }
         callChatAPi();
       }
     } else {
-      console.log("you are maker", loginData.admin_role);
       const senddata = await makerAction(data);
-      console.log(senddata);
-
+      if (!senddata?.status) {
+        toast.error(senddata?.message, {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
+      }
       // After sending the message, fetch the updated chat data
       callChatAPi();
 
@@ -164,7 +158,6 @@ const ChatComponent = () => {
       );
     }, 1000);
 
-    // Clean up the interval on component unmount
     return () => clearInterval(intervalId);
   }, [escalationStatusData?.created_at]);
 
@@ -304,7 +297,7 @@ const ChatComponent = () => {
               </div>
             )}
           </div>
-          <Tooltip title={error || ""} arrow open={error}>
+          <Tooltip title={error || ""} arrow open={error ? true : false}>
             <button className="send-button" onClick={handleSendMessage}>
               Send
             </button>
@@ -316,37 +309,3 @@ const ChatComponent = () => {
 };
 
 export default ChatComponent;
-
-/*  {messages && (
-          <div className="chat-container2">
-            {messages
-              .slice()
-              .reverse()
-              .map((message, index) => (
-                <div
-                  key={index}
-                  className={` ${
-                    message.type === "from" ? " box3 sb14" : " box4 sb13"
-                  }`}
-                >
-
-                    {console.log(message.type, message.esclated_to_comment,message.esclated_by_comment)}
-                  <p style={{ paddingBottom: "15px" }}>
-                    {message.type === "from"
-                      ? message?.esclated_by_comment
-                      : message?.esclated_to_comment}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      position: "absolute",
-                      right: "10px",
-                      bottom: "2px",
-                    }}
-                  >
-                    {formatDate(message?.created_at)}
-                  </p>
-                </div>
-              ))}
-          </div>
-        )}*/

@@ -10,7 +10,6 @@ export const checkerAction = async (data) => {
 
     const result = await makeApiRequest("CheckAction", "POST", body);
     const resdata = JSON.parse(result);
-    console.log(resdata, "checker Action");
     return resdata;
   } catch (error) {
     // Handle errors

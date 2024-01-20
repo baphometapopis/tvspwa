@@ -10,7 +10,6 @@ export const makerAction = async (data) => {
 
     const result = await makeApiRequest("MakerAction", "POST", body);
     const resdata = JSON.parse(result);
-    console.log(resdata, "Maker Action");
     return resdata;
   } catch (error) {
     // Handle errors

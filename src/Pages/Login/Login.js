@@ -58,7 +58,6 @@ const Login = () => {
 
     // Add your authentication logic here (e.g., API call, etc.)
     handleLoginApi();
-    console.log("Form submitted:", formData);
   };
 
   const checkLoginStatus = useCallback(() => {

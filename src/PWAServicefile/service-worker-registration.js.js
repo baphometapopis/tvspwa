@@ -6,10 +6,7 @@ export const register = () => {
       navigator.serviceWorker
         .register("/service-worker.js")
         .then((registration) => {
-          console.log(
-            "ServiceWorker registered with scope:",
-            registration.scope
-          );
+          console.log("ServiceWorker registered with scope:", registration.scope);
         })
         .catch((error) => {
           console.error("ServiceWorker registration failed:", error);

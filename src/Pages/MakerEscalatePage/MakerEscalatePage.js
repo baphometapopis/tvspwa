@@ -35,7 +35,6 @@ const MakerEscalatePage = () => {
   const [selectedTab, setSelectedTab] = useState("cases"); // Default tab is "cases"
 
   const handleSend = async () => {
-    console.log(searchData);
     // Check if an option is selected
     if (!issueDescription.trim() && !selectedOption) {
       setError("Please describe the issue and select an option");
@@ -60,7 +59,6 @@ const MakerEscalatePage = () => {
 
       user_id: loginData?.id,
     };
-    console.log(data);
 
     const escalateissue = await raiseEscalation(data);
     if (escalateissue.status) {
@@ -81,10 +79,6 @@ const MakerEscalatePage = () => {
         pauseOnHover: true,
       });
     }
-    console.log(escalateissue);
-
-    console.log("Selected Option:", selectedOption.value, jobID);
-    console.log("Issue Description:", issueDescription);
 
     // Clear the form fields if needed
     setSelectedOption(null);
@@ -94,7 +88,6 @@ const MakerEscalatePage = () => {
     closeModal();
   };
   const openModal = () => {
-    console.log("hiting");
     setModalOpen(true);
   };
 

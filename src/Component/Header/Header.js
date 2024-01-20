@@ -27,14 +27,12 @@ const Header = () => {
     const data = await localStorage.getItem("LoggedInUser");
     if (data) {
       const decryptdata = decryptData(data);
-    console.log(decryptdata);
-
 
       setusername(decryptdata?.first_name);
     }
     if (data === null || data === undefined) {
       navigate("/");
-    } 
+    }
   }, [navigate]);
 
   useEffect(() => {
@@ -46,12 +44,7 @@ const Header = () => {
         <img src={Logo} alt="Logo" className="Logo" />
         {isDropdownOpen && (
           <div className="dropdown-menu">
-            <div
-              className="menu-item"
-              onClick={() => console.log("Username clicked")}
-            >
-              {username}
-            </div>
+            <div className="menu-item">{username}</div>
             <div className="menu-item" onClick={handleLogout}>
               Logout
             </div>
