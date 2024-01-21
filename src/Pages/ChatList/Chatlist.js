@@ -111,7 +111,11 @@ const ChatComponent = () => {
     const formattedDate = new Date(inputDate).toLocaleString("en-US", options);
     return formattedDate;
   }
-  const calculateTimeDifference = (createDate) => {
+  const calculateTimeDifference = (createDate, resolvedDate) => {
+    console.log(
+      new Date(resolvedDate) === "Invalid Date" ? "true" : "false",
+      new Date(resolvedDate)
+    );
     const now = new Date();
     const createDateObj = new Date(createDate);
     const timeDifference = now - createDateObj;
@@ -152,14 +156,34 @@ const ChatComponent = () => {
     callChatAPi();
   }, [callChatAPi, escalationData, isStatusDropdownOpen]);
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setFormattedTime(
-        calculateTimeDifference(escalationStatusData?.created_at)
-      );
-    }, 1000);
+    // Check if the resolved date is a valid date
+    setFormattedTime(
+      calculateTimeDifference(
+        escalationStatusData?.created_at,
+        escalationStatusData?.esclation_query_resolved_at
+      )
+    );
+    if (
+      isNaN(
+        new Date(escalationStatusData?.esclation_query_resolved_at).getTime()
+      )
+    ) {
+      const intervalId = setInterval(() => {
+        setFormattedTime(
+          calculateTimeDifference(
+            escalationStatusData?.created_at,
+            escalationStatusData?.esclation_query_resolved_at
+          )
+        );
+      }, 1000);
 
-    return () => clearInterval(intervalId);
-  }, [escalationStatusData?.created_at]);
+      // Cleanup function to clear the interval when the component is unmounted
+      return () => clearInterval(intervalId);
+    }
+  }, [
+    escalationStatusData?.created_at,
+    escalationStatusData?.esclation_query_resolved_at,
+  ]);
 
   return (
     <div className="Homecnt">

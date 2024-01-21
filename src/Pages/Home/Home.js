@@ -367,8 +367,8 @@ const Home = () => {
                     <option value="Pending">Pending</option>
                     <option value="WIP">WIP</option>
                     <option value="Resolved">Resolved</option>
-                    <option value="Accepted">Accepted</option>
-                    <option value="Reopen">Reopen</option>
+                    {/* <option value="Accepted">Accepted</option> */}
+                    {/* <option value="Reopen">Reopen</option> */}
                   </select>
                 </div>
                 <div className="date-logo-container">
