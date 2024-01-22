@@ -182,41 +182,13 @@ const Home = () => {
     // Clear the error state when the input is focused
     setError(null);
   };
-  const calculateTimeDifference = (createDate) => {
-    const currentDate = moment(); // Use the current date and time
+  const calculateTimeDifference = (createDate, resolvedDate) => {
+    const currentDate = !isNaN(resolvedDate) ? moment() : moment(resolvedDate);
     const createDateObj = moment(createDate);
 
     // Check for invalid dates
 
     const duration = moment.duration(currentDate.diff(createDateObj));
-    console.log(duration);
-
-    // Get the difference in days, hours, minutes, and seconds
-    const days = duration.days();
-    const hours = duration.hours();
-    const minutes = duration.minutes();
-    const seconds = duration.seconds();
-
-    // Build the formatted string
-    const formattedTime =
-      // days > 0
-      false
-        ? `${days} day${days > 1 ? "s" : ""}`
-        : `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
-            2,
-            "0"
-          )}:${String(seconds).padStart(2, "0")}`;
-
-    console.log(formattedTime);
-    return formattedTime;
-  };
-  function calculateresolvedTimeDifference(startDateTimeStr, endDateTimeStr) {
-    // Convert string representations to Date objects
-    var startTime = moment(startDateTimeStr);
-    var endTime = moment(endDateTimeStr);
-
-    // Calculate the time difference in milliseconds
-    const duration = moment.duration(endTime.diff(startTime));
 
     // Get the difference in days, hours, minutes, and seconds
     const days = duration.days();
@@ -234,7 +206,7 @@ const Home = () => {
           )}:${String(seconds).padStart(2, "0")}`;
 
     return formattedTime;
-  }
+  };
 
   const handleInputChange = (e) => {
     const sanitizedValue = e.target.value?.replace(/[^a-zA-Z0-9]/g, "");
@@ -296,22 +268,12 @@ const Home = () => {
 
     // Set up interval to update time difference every second
     const intervalId = setInterval(() => {
-      const updatedTimeDifferences = escalationList.map((item) => {
-        // Check if esclation_query_resolved_at exists and is not NaN
-        if (
-          item?.esclation_query_resolved_at &&
-          !isNaN(Date.parse(item.esclation_query_resolved_at))
-        ) {
-          // Use calculateresolvedTimeDifference
-          return calculateresolvedTimeDifference(
-            item.job_create_date,
-            item.esclation_query_resolved_at
-          );
-        } else {
-          // Use calculateTimeDifference
-          return calculateTimeDifference(item.job_create_date);
-        }
-      });
+      const updatedTimeDifferences = escalationList.map((item) =>
+        calculateTimeDifference(
+          item.job_create_date,
+          item.esclation_query_resolved_at
+        )
+      );
 
       setTimeDifference(updatedTimeDifferences);
     }, 1000);

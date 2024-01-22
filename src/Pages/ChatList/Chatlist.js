@@ -12,6 +12,7 @@ import { checkerAction } from "../../Api/checkAction";
 import { makerAction } from "../../Api/MakerAction";
 import Tooltip from "@mui/material/Tooltip";
 import back from "../../Assets/Icons/back.png";
+import moment from "moment";
 
 const ChatComponent = () => {
   const location = useLocation();
@@ -116,31 +117,27 @@ const ChatComponent = () => {
       new Date(resolvedDate) === "Invalid Date" ? "true" : "false",
       new Date(resolvedDate)
     );
-    const now = new Date();
-    const createDateObj = new Date(createDate);
-    const timeDifference = now - createDateObj;
+    const now = !isNaN(resolvedDate) ? moment() : moment(resolvedDate);
+    const createDateObj = moment(createDate);
+    // const timeDifference = now - createDateObj;
+    const duration = moment.duration(now.diff(createDateObj));
 
-    // Calculate the difference in days, hours, minutes, and seconds
-    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor(
-      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-    );
-    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+    const days = duration.days();
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+    const seconds = duration.seconds();
 
     // Build the formatted string
-    let formattedTime = "";
+    const formattedTime =
+      // days > 0
+      false
+        ? `${days} day${days > 1 ? "s" : ""}`
+        : `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+            2,
+            "0"
+          )}:${String(seconds).padStart(2, "0")}`;
 
-    if (days > 0) {
-      formattedTime += `${days} day${days > 1 ? "s" : ""}`;
-    } else {
-      formattedTime += `${String(hours).padStart(2, "0")}:${String(
-        minutes
-      ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-    }
-
+    console.log(formattedTime);
     return formattedTime;
   };
 
@@ -152,6 +149,16 @@ const ChatComponent = () => {
   const handleGoBack = () => {
     navigate(-1);
   };
+
+  useEffect(() => {
+    // Set up an interval to call the function every 3 minutes (180,000 milliseconds)
+    const intervalId = setInterval(() => {
+      callChatAPi();
+    }, 180000);
+
+    // Cleanup function to clear the interval when the component is unmounted
+    return () => clearInterval(intervalId);
+  }, [callChatAPi]);
   useEffect(() => {
     callChatAPi();
   }, [callChatAPi, escalationData, isStatusDropdownOpen]);
