@@ -183,7 +183,7 @@ const Home = () => {
     setError(null);
   };
   const calculateTimeDifference = (createDate, resolvedDate) => {
-    const currentDate = !isNaN(resolvedDate) ? moment() : moment(resolvedDate);
+    const currentDate = isNaN(Date.parse(resolvedDate)) ? moment() : moment(resolvedDate);
     const createDateObj = moment(createDate);
 
     // Check for invalid dates
