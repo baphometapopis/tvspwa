@@ -217,7 +217,6 @@ const Home = () => {
 
     // Calculate the time difference in milliseconds
     const duration = moment.duration(endTime.diff(startTime));
-    console.log(duration);
 
     // Get the difference in days, hours, minutes, and seconds
     const days = duration.days();
@@ -234,7 +233,6 @@ const Home = () => {
             "0"
           )}:${String(seconds).padStart(2, "0")}`;
 
-    console.log(formattedTime);
     return formattedTime;
   }
 
