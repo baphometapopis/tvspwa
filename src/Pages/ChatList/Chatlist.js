@@ -113,11 +113,9 @@ const ChatComponent = () => {
     return formattedDate;
   }
   const calculateTimeDifference = (createDate, resolvedDate) => {
-    console.log(
-      new Date(resolvedDate) === "Invalid Date" ? "true" : "false",
-      new Date(resolvedDate)
-    );
-    const now = isNaN(Date.parse(resolvedDate)) ? moment() : moment(resolvedDate);
+    const now = isNaN(Date.parse(resolvedDate))
+      ? moment()
+      : moment(resolvedDate);
     const createDateObj = moment(createDate);
     // const timeDifference = now - createDateObj;
     const duration = moment.duration(now.diff(createDateObj));
@@ -137,7 +135,6 @@ const ChatComponent = () => {
             "0"
           )}:${String(seconds).padStart(2, "0")}`;
 
-    console.log(formattedTime);
     return formattedTime;
   };
 
