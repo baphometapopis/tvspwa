@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import supportAgent from "../../Assets/Icons/supportAgent.png";
 import { searchEscalationData } from "../../Api/searchEscalationData";
 import ReactDatePicker from "react-datepicker";
+import moment from "moment";
 const Home = () => {
   const navigate = useNavigate();
   const [escalationList, setEscalationList] = useState([]);
@@ -182,33 +183,60 @@ const Home = () => {
     setError(null);
   };
   const calculateTimeDifference = (createDate) => {
-    const now = new Date();
-    const createDateObj = new Date(createDate);
-    const timeDifference = now - createDateObj;
+    const currentDate = moment(); // Use the current date and time
+    const createDateObj = moment(createDate);
 
-    // Calculate the difference in days, hours, minutes, and seconds
-    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor(
-      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-    );
-    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+    // Check for invalid dates
+
+    const duration = moment.duration(currentDate.diff(createDateObj));
+    console.log(duration);
+
+    // Get the difference in days, hours, minutes, and seconds
+    const days = duration.days();
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+    const seconds = duration.seconds();
 
     // Build the formatted string
-    let formattedTime = "";
+    const formattedTime =
+      // days > 0
+      false
+        ? `${days} day${days > 1 ? "s" : ""}`
+        : `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+            2,
+            "0"
+          )}:${String(seconds).padStart(2, "0")}`;
 
-    if (days > 0) {
-      formattedTime += `${days} day${days > 1 ? "s" : ""}`;
-    } else {
-      formattedTime += `${String(hours).padStart(2, "0")}:${String(
-        minutes
-      ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-    }
-
+    console.log(formattedTime);
     return formattedTime;
   };
+  function calculateresolvedTimeDifference(startDateTimeStr, endDateTimeStr) {
+    // Convert string representations to Date objects
+    var startTime = moment(startDateTimeStr);
+    var endTime = moment(endDateTimeStr);
+
+    // Calculate the time difference in milliseconds
+    const duration = moment.duration(endTime.diff(startTime));
+    console.log(duration);
+
+    // Get the difference in days, hours, minutes, and seconds
+    const days = duration.days();
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+    const seconds = duration.seconds();
+
+    // Build the formatted string
+    const formattedTime =
+      days > 0
+        ? `${days} day${days > 1 ? "s" : ""}`
+        : `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+            2,
+            "0"
+          )}:${String(seconds).padStart(2, "0")}`;
+
+    console.log(formattedTime);
+    return formattedTime;
+  }
 
   const handleInputChange = (e) => {
     const sanitizedValue = e.target.value?.replace(/[^a-zA-Z0-9]/g, "");
@@ -270,9 +298,23 @@ const Home = () => {
 
     // Set up interval to update time difference every second
     const intervalId = setInterval(() => {
-      const updatedTimeDifferences = escalationList.map((item) =>
-        calculateTimeDifference(item.job_create_date)
-      );
+      const updatedTimeDifferences = escalationList.map((item) => {
+        // Check if esclation_query_resolved_at exists and is not NaN
+        if (
+          item?.esclation_query_resolved_at &&
+          !isNaN(Date.parse(item.esclation_query_resolved_at))
+        ) {
+          // Use calculateresolvedTimeDifference
+          return calculateresolvedTimeDifference(
+            item.job_create_date,
+            item.esclation_query_resolved_at
+          );
+        } else {
+          // Use calculateTimeDifference
+          return calculateTimeDifference(item.job_create_date);
+        }
+      });
+
       setTimeDifference(updatedTimeDifferences);
     }, 1000);
 
