@@ -10,11 +10,13 @@ import { toast } from "react-toastify";
 import supportAgent from "../../Assets/Icons/supportAgent.png";
 import chat from "../../Assets/Icons/chat.png";
 import back from "../../Assets/Icons/back.png";
+import { Badge } from "antd";
 
 import Select from "react-select";
 import { Tooltip } from "@mui/material";
 import { raiseEscalation } from "../../Api/raiseEscalation";
 import { IndividualesclationListAPI } from "../../Api/IndividualesclationList";
+import moment from "moment";
 
 const MakerEscalatePage = () => {
   const navigate = useNavigate();
@@ -111,7 +113,7 @@ const MakerEscalatePage = () => {
         setcategoryList(categorydata.data);
       }
 
-      const localData = localStorage.getItem("LoggedInUser");
+      const localData = localStorage.getItem("TVS_Cache_Data");
       if (localData !== null || localData !== undefined) {
         const decryptdata = decryptData(localData);
         setLoginData(decryptdata);
@@ -211,39 +213,68 @@ const MakerEscalatePage = () => {
       </button>
       <div className="info-container">
         <div className="info-box">
-          <div>
-            <div className="profileContainer">
-              <div className="infolabels-container">
-                <div className="infolabel">Name</div>
-                <div className="infolabel">Phone No</div>
-                <div className="infolabel">Policy No</div>
+          <Badge.Ribbon
+            text={`${searchData?.policy_status}`}
+            color={searchData?.policy_status === "active" ? "green" : "red"}
+            style={{
+              position: "absolute",
+              top: "-10px",
+              right: "-24px",
+              fontSize: "18px",
+              padding: "5px",
+            }}
+          >
+            <div>
+              <div className="profileContainer">
+                <div className="infolabels-container">
+                  <div className="infolabel">Name</div>
+                  <div className="infolabel">Phone No</div>
+                  <div className="infolabel">Policy No</div>
+                  <div className="infolabel">plan</div>
 
-                <div className="infolabel">Job ID</div>
-                <div className="infolabel">Chassis No</div>
-                <div className="infolabel">Vehicle No</div>
-                <div className="infolabel">Dealer Code:</div>
-                <div className="infolabel">Model</div>
-                {/* <div className="infolabel">Nature of Complaint :</div> */}
-              </div>
-              <div className="values-container">
-                <p className="labelvalue">
-                  :{searchData?.customer_name || null}
-                </p>
-                <p className="labelvalue">
-                  :{searchData?.customer_mobile_no || null}
-                </p>
-                <p className="labelvalue">:{searchData?.policy_no || null}</p>
+                  <div className="infolabel">Job ID</div>
+                  <div className="infolabel">Chassis No</div>
+                  <div className="infolabel">Vehicle No</div>
+                  <div className="infolabel">Dealer Name:</div>
+                  <div className="infolabel">Model</div>
 
-                <p className="labelvalue">:{searchData?.jobid || null}</p>
-                <p className="labelvalue">:{searchData?.frame_no || null}</p>
-                <p className="labelvalue">
-                  :{searchData?.registration_no || null}
-                </p>
-                <p className="labelvalue">:{searchData?.sap_ad_code || null}</p>
-                <p className="labelvalue">:{searchData?.model || null}</p>
+                  <div className="infolabel">Policy Period:</div>
+
+                  {/* <div className="infolabel">Nature of Complaint :</div> */}
+                </div>
+                <div className="values-container">
+                  <p className="labelvalue">
+                    :{searchData?.customer_name || null}
+                  </p>
+                  <p className="labelvalue">
+                    :{searchData?.customer_mobile_no || null}
+                  </p>
+                  <p className="labelvalue">:{searchData?.policy_no || null}</p>
+                  <p className="labelvalue">:{searchData?.plan_name || null}</p>
+
+                  <p className="labelvalue">:{searchData?.jobid || null}</p>
+                  <p className="labelvalue">:{searchData?.frame_no || null}</p>
+                  <p className="labelvalue">
+                    :{searchData?.registration_no || null}
+                  </p>
+                  <p className="labelvalue">
+                    :{searchData?.dealer_name || null}
+                  </p>
+                  <p className="labelvalue">:{searchData?.model || null}</p>
+                  <p className="labelvalue">
+                    :
+                    {moment(searchData?.policy_effective_date).format(
+                      "DD/MM/YYYY"
+                    )}{" "}
+                    -{" "}
+                    {moment(searchData?.sold_policy_end_date).format(
+                      "DD/MM/YYYY"
+                    )}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          </Badge.Ribbon>
 
           {loginData?.esclation_type === "maker" && (
             <button

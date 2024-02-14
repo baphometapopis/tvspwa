@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   const checkLoginStatus = useCallback(async () => {
-    const data = await localStorage.getItem("LoggedInUser");
+    const data = await localStorage.getItem("TVS_Cache_Data");
     if (data) {
       const decryptdata = decryptData(data);
 

@@ -32,7 +32,7 @@ const ChatComponent = () => {
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const callChatAPi = useCallback(async () => {
-    const localData = localStorage.getItem("LoggedInUser");
+    const localData = localStorage.getItem("TVS_Cache_Data");
     const decryptdata = decryptData(localData);
     setloginData(decryptdata);
     setStatusOption(
@@ -118,7 +118,10 @@ const ChatComponent = () => {
       : moment(resolvedDate);
     const createDateObj = moment(createDate);
     // const timeDifference = now - createDateObj;
+    // const duration = moment.duration(now.diff(createDateObj));
     const duration = moment.duration(now.diff(createDateObj));
+
+    // console.log(duration,createDate,resolvedDate);
 
     const days = duration.days();
     const hours = duration.hours();
@@ -127,8 +130,7 @@ const ChatComponent = () => {
 
     // Build the formatted string
     const formattedTime =
-      // days > 0
-      false
+      days > 0
         ? `${days} day${days > 1 ? "s" : ""}`
         : `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
             2,
@@ -161,6 +163,7 @@ const ChatComponent = () => {
   }, [callChatAPi, escalationData, isStatusDropdownOpen]);
   useEffect(() => {
     // Check if the resolved date is a valid date
+
     setFormattedTime(
       calculateTimeDifference(
         escalationStatusData?.created_at,
@@ -188,7 +191,6 @@ const ChatComponent = () => {
     escalationStatusData?.created_at,
     escalationStatusData?.esclation_query_resolved_at,
   ]);
-
   return (
     <div className="Homecnt">
       <Header />

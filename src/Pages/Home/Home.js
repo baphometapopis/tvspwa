@@ -146,7 +146,7 @@ const Home = () => {
 
   const fetchEscalationList = useCallback(
     async (param, filterdata) => {
-      const localData = localStorage.getItem("LoggedInUser");
+      const localData = localStorage.getItem("TVS_Cache_Data");
 
       if (localData !== null || localData !== undefined) {
         const decryptdata = decryptData(localData);
@@ -230,12 +230,11 @@ const Home = () => {
       );
     } else {
       setvalidationerror("");
-      console.log("no error error ");
     }
   };
 
   const checkLoginStatus = useCallback(async () => {
-    const data = await localStorage.getItem("LoggedInUser");
+    const data = await localStorage.getItem("TVS_Cache_Data");
     if (data === null || data === undefined) {
       navigate("/");
     } else {

@@ -1,5 +1,5 @@
 // src/utils/authUtils.js
 export const isLoggedIn = () => {
-    return !!localStorage.getItem("loggedInUser");
+    return !!localStorage.getItem("TVS_Cache_Data");
   };
   

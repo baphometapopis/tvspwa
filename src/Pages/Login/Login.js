@@ -61,7 +61,7 @@ const Login = () => {
   };
 
   const checkLoginStatus = useCallback(() => {
-    const data = localStorage.getItem("LoggedInUser");
+    const data = localStorage.getItem("TVS_Cache_Data");
     if (data === null || data === undefined) {
       navigation("/");
     } else {
@@ -78,7 +78,7 @@ const Login = () => {
         // Attempt to store data in local storage
         // Check if the user is logged in after storing data
         const isSetSuccessful = setItemToLocalStorage(
-          "LoggedInUser",
+          "TVS_Cache_Data",
           encryptedData
         );
 
