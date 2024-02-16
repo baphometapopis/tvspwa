@@ -215,7 +215,7 @@ const MakerEscalatePage = () => {
         <div className="info-box">
           <Badge.Ribbon
             text={`${searchData?.policy_status}`}
-            color={searchData?.policy_status === "active" ? "green" : "red"}
+            color={searchData?.policy_status === "Active" ? "green" : "red"}
             style={{
               position: "absolute",
               top: "-10px",
@@ -230,7 +230,7 @@ const MakerEscalatePage = () => {
                   <div className="infolabel">Name</div>
                   <div className="infolabel">Phone No</div>
                   <div className="infolabel">Policy No</div>
-                  <div className="infolabel">plan</div>
+                  <div className="infolabel">Plan</div>
 
                   <div className="infolabel">Job ID</div>
                   <div className="infolabel">Chassis No</div>
@@ -358,6 +358,7 @@ const MakerEscalatePage = () => {
                       <img
                         src={chat}
                         alt="Logo"
+                        style={{ cursor: "pointer" }}
                         onClick={() => {
                           navigate("/chat", {
                             state: { escdata: item },

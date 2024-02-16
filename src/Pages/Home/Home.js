@@ -183,7 +183,9 @@ const Home = () => {
     setError(null);
   };
   const calculateTimeDifference = (createDate, resolvedDate) => {
-    const currentDate = isNaN(Date.parse(resolvedDate)) ? moment() : moment(resolvedDate);
+    const currentDate = isNaN(Date.parse(resolvedDate))
+      ? moment()
+      : moment(resolvedDate);
     const createDateObj = moment(createDate);
 
     // Check for invalid dates
@@ -421,6 +423,7 @@ const Home = () => {
             src={filter}
             onClick={handleModalOpen}
             alt="Logo"
+            style={{ cursor: "pointer" }}
             className="viewData"
           />
 
@@ -463,6 +466,7 @@ const Home = () => {
                           handleSearch("ViewDocument", item?.job_id);
                         }}
                         alt="Logo"
+                        style={{ cursor: "pointer" }}
                         className="viewData"
                       />
                       <p

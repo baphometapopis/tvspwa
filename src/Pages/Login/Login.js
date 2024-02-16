@@ -69,46 +69,48 @@ const Login = () => {
     }
   }, [navigation]);
   const handleLoginApi = async () => {
-    try {
-      const loginResponse = await login(formData.username, formData.password);
+    window.location.href = "http://localhost:3000/Login";
 
-      if (loginResponse?.status) {
-        const encryptedData = encryptData(loginResponse.data);
+    // try {
+    //   const loginResponse = await login(formData.username, formData.password);
 
-        // Attempt to store data in local storage
-        // Check if the user is logged in after storing data
-        const isSetSuccessful = setItemToLocalStorage(
-          "TVS_Cache_Data",
-          encryptedData
-        );
+    //   if (loginResponse?.status) {
+    //     const encryptedData = encryptData(loginResponse.data);
 
-        if (isSetSuccessful) {
-          // If the user is logged in, navigate to the home page
-          toast.success(loginResponse?.message, {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-          });
+    //     // Attempt to store data in local storage
+    //     // Check if the user is logged in after storing data
+    //     const isSetSuccessful = setItemToLocalStorage(
+    //       "TVS_Cache_Data",
+    //       encryptedData
+    //     );
 
-          navigation("/Home");
-        }
-      } else {
-        // Failed login
-        toast.error(loginResponse?.message, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-        });
-      }
-    } catch (error) {
-      console.error("Error during login:", error);
-      // Handle other errors if needed
-      toast.error("An error occurred during login");
-    }
+    //     if (isSetSuccessful) {
+    //       // If the user is logged in, navigate to the home page
+    //       toast.success(loginResponse?.message, {
+    //         position: "bottom-right",
+    //         autoClose: 3000,
+    //         hideProgressBar: false,
+    //         closeOnClick: true,
+    //         pauseOnHover: true,
+    //       });
+
+    //       navigation("/Home");
+    //     }
+    //   } else {
+    //     // Failed login
+    //     toast.error(loginResponse?.message, {
+    //       position: "bottom-right",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //     });
+    //   }
+    // } catch (error) {
+    //   console.error("Error during login:", error);
+    //   // Handle other errors if needed
+    //   toast.error("An error occurred during login");
+    // }
   };
   useEffect(() => {
     // Display the message if it exists in the location state
@@ -140,7 +142,7 @@ const Login = () => {
         </div>
         <form onSubmit={handleSubmit}>
           <div style={{ padding: "20px" }}>
-          <div style={{padding:'10px',position:'relative'}}>
+            <div style={{ padding: "10px", position: "relative" }}>
               <input
                 className="input"
                 type="text"
@@ -154,20 +156,19 @@ const Login = () => {
                 <span className="error">{errors.username}</span>
               )}
             </div>
-            <div style={{padding:'10px',position:'relative'}}>
-
-            <input
-              className="input"
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Password"
-            />
-            {errors.password && (
-              <span className="error">{errors.password}</span>
-            )}
+            <div style={{ padding: "10px", position: "relative" }}>
+              <input
+                className="input"
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Password"
+              />
+              {errors.password && (
+                <span className="error">{errors.password}</span>
+              )}
             </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <button className="button" type="submit">
