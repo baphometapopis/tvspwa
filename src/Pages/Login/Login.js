@@ -2,14 +2,14 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import "./login.css"; // Import the CSS file
-import { login } from "../../Api/loginApi";
+// import { login } from "../../Api/loginApi";
 import { toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { encryptData } from "../../Utils/cryptoUtils";
-import { setItemToLocalStorage } from "../../Utils/localStorageUtils";
+// import { encryptData } from "../../Utils/cryptoUtils";
+// import { setItemToLocalStorage } from "../../Utils/localStorageUtils";
 
 const Login = () => {
   const navigation = useNavigate();
