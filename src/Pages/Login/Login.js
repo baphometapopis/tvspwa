@@ -69,7 +69,11 @@ const Login = () => {
     }
   }, [navigation]);
   const handleLoginApi = async () => {
-    window.location.href = "http://localhost:3000/Login";
+    window.location.href =
+      "http://localhost:3000/Login/?redirection_key=TTZIeFJneERGekE4SVRRWHovakJSQVFIYVExUGpvU3Q1UEJlaXRzR3g0OD0=";
+
+    // window.location.href =
+    //   "https://hospicash.mylmsnow.com/Login/redirection_key=TTZIeFJneERGekE4SVRRWHovakJSQVFIYVExUGpvU3Q1UEJlaXRzR3g0OD0=";
 
     // try {
     //   const loginResponse = await login(formData.username, formData.password);
