@@ -512,7 +512,11 @@ setAppliedFilter(filterdata);
             </div>
           </div>
         )}
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> origin/master
         <div className="top-tabs-home">
           <div
             className={`top-tab ${selectedTab === "cases" ? "active" : ""}`}
@@ -677,7 +681,11 @@ setAppliedFilter(filterdata);
             </div></div>}   
 
             </>}
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> origin/master
         
        { selectedTab==='cases' &&  <> <div className="filterHeader">
 
